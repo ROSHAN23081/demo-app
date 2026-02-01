@@ -2,52 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Objex Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <title>Mobile Objex</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
         
         :root {
             --gold: #FFD700;
-            --gold-dark: #FFA500;
-            --black: #000000;
-            --dark: #0a0a0a;
-            --gray: #1a1a1a;
-            --light-gray: #2a2a2a;
-            --text: #ffffff;
-            --text-muted: #888888;
+            --gold-dark: #B8860B;
+            --bg: #000000;
+            --card: #1C1C1E;
+            --card-active: #2C2C2E;
+            --text: #FFFFFF;
+            --text-secondary: #8E8E93;
         }
         
-        body {
-            background-color: var(--black);
+        body { 
+            background: var(--bg); 
             color: var(--text);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
+            padding-bottom: 80px;
             overflow-x: hidden;
         }
         
-        /* Layout - Single Page */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding-bottom: 80px;
-        }
-        
-        /* Header */
+        /* Fast Header */
         .header {
-            padding: 20px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px);
             z-index: 100;
-            border-bottom: 1px solid var(--light-gray);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
         
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -55,66 +53,62 @@
             font-size: 20px;
         }
         
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            border-radius: 8px;
+        .shield {
+            width: 28px;
+            height: 28px;
+            background: var(--gold);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--black);
+            color: black;
+            font-size: 16px;
         }
         
-        .status-badge {
+        .status {
             display: flex;
             align-items: center;
             gap: 6px;
             font-size: 12px;
             color: var(--gold);
-            background: rgba(255,215,0,0.1);
+            background: rgba(255,215,0,0.15);
             padding: 6px 12px;
             border-radius: 20px;
-            border: 1px solid rgba(255,215,0,0.3);
+            font-weight: 600;
         }
         
-        .pulse {
+        .dot {
             width: 6px;
             height: 6px;
             background: var(--gold);
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px var(--gold);
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        /* Hero Section - Safety Score */
-        .hero {
-            padding: 30px 20px;
+        /* Safety Score */
+        .score-section {
+            padding: 40px 20px;
             text-align: center;
-            background: linear-gradient(180deg, rgba(255,215,0,0.1) 0%, transparent 100%);
+            background: linear-gradient(180deg, rgba(255,215,0,0.08) 0%, transparent 100%);
         }
         
-        .score-ring {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 20px;
+        .score-circle {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background: conic-gradient(var(--gold) 0% 98%, var(--gray) 98% 100%);
+            background: conic-gradient(var(--gold) var(--score, 98%), var(--card) 0);
+            position: relative;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            box-shadow: 0 0 40px rgba(255,215,0,0.2);
+            box-shadow: 0 0 30px rgba(255,215,0,0.15);
         }
         
         .score-inner {
-            width: 120px;
-            height: 120px;
-            background: var(--dark);
+            width: 104px;
+            height: 104px;
+            background: var(--bg);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -122,109 +116,75 @@
             justify-content: center;
         }
         
-        .score-number {
-            font-size: 48px;
+        .score-num {
+            font-size: 42px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--gold);
             line-height: 1;
         }
         
         .score-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-        
-        .hero h2 {
-            font-size: 24px;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-        
-        .hero p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        
-        /* Stats Row */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            padding: 0 20px;
-            margin-bottom: 24px;
-        }
-        
-        .stat-box {
-            background: var(--gray);
-            padding: 16px 8px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid var(--light-gray);
-        }
-        
-        .stat-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 4px;
-        }
-        
-        .stat-label {
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
-        /* Quick Actions - The Core Feature */
-        .section {
-            padding: 0 20px;
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+        
+        /* Quick Actions - The Core */
+        .actions {
+            padding: 0 16px;
             margin-bottom: 24px;
         }
         
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        
         .section-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-left: 4px;
         }
         
-        .action-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
         
-        .action-card {
-            background: var(--gray);
-            border: 1px solid var(--light-gray);
+        .action-btn {
+            background: var(--card);
+            border: none;
             border-radius: 16px;
             padding: 20px;
+            color: var(--text);
+            text-align: left;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.1s;
             position: relative;
             overflow: hidden;
         }
         
-        .action-card:active {
+        .action-btn:active {
             transform: scale(0.96);
-            background: var(--light-gray);
+            background: var(--card-active);
         }
         
-        .action-card.active-state {
-            border-color: var(--gold);
-            background: rgba(255,215,0,0.1);
+        .action-btn.active {
+            background: rgba(255,215,0,0.15);
+            border: 1px solid rgba(255,215,0,0.3);
         }
         
-        .action-icon {
+        .icon-box {
             width: 48px;
             height: 48px;
             border-radius: 12px;
@@ -235,61 +195,66 @@
             margin-bottom: 12px;
         }
         
-        .action-icon.blue { background: rgba(59,130,246,0.2); color: #60A5FA; }
-        .action-icon.green { background: rgba(34,197,94,0.2); color: #4ADE80; }
-        .action-icon.purple { background: rgba(168,85,247,0.2); color: #C084FC; }
-        .action-icon.orange { background: rgba(249,115,22,0.2); color: #FB923C; }
+        .icon-scan { background: rgba(0,122,255,0.15); }
+        .icon-vpn { background: rgba(52,199,89,0.15); }
+        .icon-pass { background: rgba(175,82,222,0.15); }
+        .icon-wifi { background: rgba(255,149,0,0.15); }
         
         .action-title {
+            font-size: 16px;
             font-weight: 600;
-            font-size: 15px;
             margin-bottom: 4px;
+            display: block;
         }
         
-        .action-desc {
-            font-size: 12px;
-            color: var(--text-muted);
+        .action-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
         }
         
-        .action-status {
+        .indicator {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 16px;
+            right: 16px;
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--gold);
-            display: none;
+            box-shadow: 0 0 8px var(--gold);
+            opacity: 0;
         }
         
-        .action-card.active-state .action-status {
-            display: block;
-            animation: pulse 2s infinite;
+        .action-btn.active .indicator {
+            opacity: 1;
         }
         
         /* Activity Feed */
-        .activity-list {
-            background: var(--gray);
+        .activity {
+            padding: 0 16px;
+        }
+        
+        .act-list {
+            background: var(--card);
             border-radius: 16px;
-            border: 1px solid var(--light-gray);
             overflow: hidden;
         }
         
-        .activity-item {
-            padding: 16px 20px;
+        .act-item {
+            padding: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid var(--light-gray);
-            transition: background 0.2s;
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+            cursor: pointer;
         }
         
-        .activity-item:last-child { border-bottom: none; }
-        .activity-item:active { background: var(--light-gray); }
+        .act-item:last-child { border-bottom: none; }
+        .act-item:active { background: var(--card-active); }
         
-        .activity-icon {
-            width: 40px;
-            height: 40px;
+        .act-icon {
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -298,157 +263,100 @@
             flex-shrink: 0;
         }
         
-        .activity-icon.safe { background: rgba(34,197,94,0.2); color: #4ADE80; }
-        .activity-icon.block { background: rgba(239,68,68,0.2); color: #F87171; }
-        .activity-icon.warn { background: rgba(255,193,7,0.2); color: #FCD34D; }
+        .act-safe { background: rgba(52,199,89,0.2); color: #34C759; }
+        .act-block { background: rgba(255,59,48,0.2); color: #FF3B30; }
+        .act-warn { background: rgba(255,204,0,0.2); color: #FFCC00; }
         
-        .activity-content { flex: 1; min-width: 0; }
+        .act-content { flex: 1; min-width: 0; }
         
-        .activity-title {
-            font-weight: 500;
-            font-size: 14px;
+        .act-title {
+            font-weight: 600;
+            font-size: 15px;
             margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
-        .activity-meta {
-            font-size: 12px;
-            color: var(--text-muted);
+        .act-time {
+            font-size: 13px;
+            color: var(--text-secondary);
         }
         
-        .activity-badge {
+        .act-badge {
             font-size: 11px;
             padding: 4px 8px;
             border-radius: 6px;
-            font-weight: 600;
+            font-weight: 700;
+            flex-shrink: 0;
         }
         
-        .badge-green { background: rgba(34,197,94,0.2); color: #4ADE80; }
-        .badge-red { background: rgba(239,68,68,0.2); color: #F87171; }
-        .badge-yellow { background: rgba(255,193,7,0.2); color: #FCD34D; }
+        .badge-ok { background: rgba(52,199,89,0.2); color: #34C759; }
+        .badge-bad { background: rgba(255,59,48,0.2); color: #FF3B30; }
+        .badge-warn { background: rgba(255,204,0,0.2); color: #FFCC00; }
         
-        /* Simple Bar Chart - CSS Only */
-        .chart-container {
-            background: var(--gray);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--light-gray);
-        }
-        
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            height: 120px;
-            margin-top: 16px;
-            gap: 8px;
-        }
-        
-        .bar-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .bar {
-            width: 100%;
-            background: var(--light-gray);
-            border-radius: 4px;
-            position: relative;
-            transition: all 0.3s;
-        }
-        
-        .bar-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, var(--gold-dark), var(--gold));
-            border-radius: 4px;
-            min-height: 4px;
-        }
-        
-        .bar-label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        
-        /* Bottom Navigation */
-        .bottom-nav {
+        /* Bottom Nav */
+        .nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--light-gray);
-            padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            border-top: 0.5px solid rgba(255,255,255,0.1);
+            padding: 8px 0 24px;
+            display: flex;
+            justify-content: space-around;
             z-index: 100;
         }
         
-        .nav-container {
-            max-width: 480px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        
-        .nav-item {
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            padding: 4px 12px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 11px;
-            transition: all 0.2s;
+            font-size: 10px;
             cursor: pointer;
-            border: none;
-            background: none;
+            padding: 4px 12px;
+            transition: color 0.2s;
         }
         
-        .nav-item.active {
-            color: var(--gold);
-        }
+        .nav-btn.active { color: var(--gold); }
         
-        .nav-icon {
-            font-size: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .nav-icon { font-size: 24px; line-height: 1; }
         
-        /* Utility Classes */
-        .gold-text {
-            color: var(--gold);
-        }
-        
-        /* Scan Overlay */
-        .scan-overlay {
+        /* Overlays */
+        .overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: var(--black);
+            background: var(--bg);
             z-index: 200;
             flex-direction: column;
         }
         
-        .scan-overlay.active {
-            display: flex;
-        }
+        .overlay.show { display: flex; }
         
-        .scan-header {
-            padding: 20px;
+        .overlay-header {
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+        }
+        
+        .close-x {
+            background: var(--card);
+            border: none;
+            color: var(--text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
         }
         
         .scan-area {
@@ -457,16 +365,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
+            padding: 20px;
         }
         
-        .scan-frame {
-            width: 280px;
-            height: 280px;
+        .scan-box {
+            width: 260px;
+            height: 260px;
             border: 2px solid var(--gold);
             border-radius: 24px;
             position: relative;
             overflow: hidden;
+            margin-bottom: 40px;
         }
         
         .scan-line {
@@ -483,10 +392,10 @@
             100% { top: 100%; }
         }
         
-        .scan-result {
+        .scan-overlay-content {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -496,12 +405,26 @@
             transition: opacity 0.3s;
         }
         
-        .scan-result.show {
+        .scan-overlay-content.done {
             opacity: 1;
             pointer-events: all;
         }
         
-        /* Detail Modal */
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+        
+        .result-safe { background: rgba(52,199,89,0.2); color: #34C759; }
+        .result-warn { background: rgba(255,59,48,0.2); color: #FF3B30; }
+        
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -512,550 +435,436 @@
             overflow-y: auto;
         }
         
-        .modal.active {
-            display: block;
-        }
+        .modal.open { display: block; }
         
-        .modal-content {
-            background: var(--gray);
+        .modal-box {
+            background: var(--card);
             border-radius: 20px;
             padding: 24px;
-            margin-top: 20px;
-            border: 1px solid var(--light-gray);
+            margin-top: 40px;
         }
         
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .close-btn {
-            background: var(--light-gray);
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold);
+            color: black;
             border: none;
-            color: var(--text);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-        
-        /* Toggle Switch */
-        .toggle-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: var(--light-gray);
             border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
             margin-top: 16px;
         }
         
-        .toggle {
-            width: 50px;
-            height: 28px;
-            background: var(--gray);
-            border-radius: 14px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid var(--light-gray);
+        .btn-primary:active { opacity: 0.8; }
+        
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
         
-        .toggle.active {
+        .toggle-row:last-child { border-bottom: none; }
+        
+        .toggle {
+            width: 50px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle.on {
             background: var(--gold);
-            border-color: var(--gold);
         }
         
         .toggle-knob {
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 20px;
-            height: 20px;
+            width: 26px;
+            height: 26px;
             background: white;
             border-radius: 50%;
             transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        .toggle.active .toggle-knob {
-            transform: translateX(22px);
+        .toggle.on .toggle-knob {
+            transform: translateX(20px);
+        }
+        
+        /* Loading/Toast */
+        .toast {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--card);
+            color: var(--gold);
+            padding: 12px 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,215,0,0.3);
+            font-weight: 600;
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <!-- Main Container -->
-    <div class="container">
-        
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <div class="logo-icon">◊</div>
-                <span>Mobile<span style="color: var(--gold)">Objex</span></span>
-            </div>
-            <div class="status-badge">
-                <div class="pulse"></div>
-                Protected
-            </div>
-        </header>
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            <div class="shield">◊</div>
+            <span>Mobile<span style="color: var(--gold)">Objex</span></span>
+        </div>
+        <div class="status">
+            <div class="dot"></div>
+            Active
+        </div>
+    </header>
 
-        <!-- Hero: Safety Score -->
-        <section class="hero">
-            <div class="score-ring">
+    <!-- Main Content -->
+    <main>
+        <!-- Score -->
+        <section class="score-section">
+            <div class="score-circle" style="--score: 98%;">
                 <div class="score-inner">
-                    <div class="score-number">98</div>
-                    <div class="score-label">Safety Score</div>
+                    <div class="score-num">98</div>
+                    <div class="score-label">Safety</div>
                 </div>
             </div>
-            <h2>Your Communications Are Secure</h2>
-            <p>AI-powered fraud detection active across all channels</p>
+            <h1>You're Protected</h1>
+            <p class="subtitle">Real-time fraud detection on</p>
         </section>
 
-        <!-- Quick Stats -->
-        <div class="stats-row">
-            <div class="stat-box">
-                <div class="stat-value">2.8k</div>
-                <div class="stat-label">Verified</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">147</div>
-                <div class="stat-label">Blocked</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">12.4k</div>
-                <div class="stat-label">Co-op</div>
-            </div>
-        </div>
-
-        <!-- Quick Actions (From PDF Page 1) -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-title">Quick Actions</div>
-                <span style="color: var(--text-muted); font-size: 13px;">Tap to activate</span>
-            </div>
-            
-            <div class="action-grid">
-                <div class="action-card" onclick="toggleAction(this, 'scan')">
-                    <div class="action-status"></div>
-                    <div class="action-icon blue">📷</div>
-                    <div class="action-title">Scan Now</div>
-                    <div class="action-desc">Verify QR codes & links</div>
-                </div>
+        <!-- Quick Actions -->
+        <section class="actions">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="grid">
+                <button class="action-btn" onclick="openScan()">
+                    <div class="indicator"></div>
+                    <div class="icon-box icon-scan">📷</div>
+                    <span class="action-title">Scan Now</span>
+                    <span class="action-sub">Verify codes</span>
+                </button>
                 
-                <div class="action-card" onclick="toggleAction(this, 'vpn')">
-                    <div class="action-status"></div>
-                    <div class="action-icon green">🔒</div>
-                    <div class="action-title">Enable VPN</div>
-                    <div class="action-desc">Secure connection</div>
-                </div>
+                <button class="action-btn" id="vpnBtn" onclick="toggleVPN()">
+                    <div class="indicator"></div>
+                    <div class="icon-box icon-vpn">🔒</div>
+                    <span class="action-title">Enable VPN</span>
+                    <span class="action-sub" id="vpnText">Secure conn</span>
+                </button>
                 
-                <div class="action-card" onclick="showDetail('password')">
-                    <div class="action-icon purple">🗝</div>
-                    <div class="action-title">Check Password</div>
-                    <div class="action-desc">Leak detection</div>
-                </div>
+                <button class="action-btn" onclick="showPassword()">
+                    <div class="icon-box icon-pass">🔑</div>
+                    <span class="action-title">Password</span>
+                    <span class="action-sub">Leak check</span>
+                </button>
                 
-                <div class="action-card" onclick="showDetail('wifi')">
-                    <div class="action-icon orange">📡</div>
-                    <div class="action-title">Secure Wi-Fi</div>
-                    <div class="action-desc">Network protection</div>
-                </div>
+                <button class="action-btn" onclick="showWifi()">
+                    <div class="icon-box icon-wifi">📶</div>
+                    <span class="action-title">Secure Wi-Fi</span>
+                    <span class="action-sub">Network check</span>
+                </button>
             </div>
         </section>
 
-        <!-- Recent Activity -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-title">Recent Activity</div>
-                <button style="background: none; border: none; color: var(--gold); font-size: 13px; cursor: pointer;" onclick="showAllActivity()">View All</button>
-            </div>
-            
-            <div class="activity-list">
-                <div class="activity-item" onclick="showActivityDetail('chase')">
-                    <div class="activity-icon safe">✓</div>
-                    <div class="activity-content">
-                        <div class="activity-title">Chase Bank Alert</div>
-                        <div class="activity-meta">Transaction notification • 2m ago</div>
+        <!-- Activity -->
+        <section class="activity">
+            <h2 class="section-title">Recent</h2>
+            <div class="act-list">
+                <div class="act-item" onclick="showDetail('chase')">
+                    <div class="act-icon act-safe">✓</div>
+                    <div class="act-content">
+                        <div class="act-title">Chase Bank Alert</div>
+                        <div class="act-time">2m ago • Transaction</div>
                     </div>
-                    <span class="activity-badge badge-green">Safe</span>
+                    <span class="act-badge badge-ok">Safe</span>
                 </div>
                 
-                <div class="activity-item" onclick="showActivityDetail('blocked')">
-                    <div class="activity-icon block">✕</div>
-                    <div class="activity-content">
-                        <div class="activity-title">Unknown Sender Blocked</div>
-                        <div class="activity-meta">Phishing attempt • 1h ago</div>
+                <div class="act-item" onclick="showDetail('blocked')">
+                    <div class="act-icon act-block">✕</div>
+                    <div class="act-content">
+                        <div class="act-title">Unknown Sender</div>
+                        <div class="act-time">1h ago • Blocked</div>
                     </div>
-                    <span class="activity-badge badge-red">Blocked</span>
+                    <span class="act-badge badge-bad">Fraud</span>
                 </div>
                 
-                <div class="activity-item" onclick="showActivityDetail('delivery')">
-                    <div class="activity-icon warn">!</div>
-                    <div class="activity-content">
-                        <div class="activity-title">Package Delivery</div>
-                        <div class="activity-meta">USPS notification • 3h ago</div>
+                <div class="act-item" onclick="showDetail('delivery')">
+                    <div class="act-icon act-warn">!</div>
+                    <div class="act-content">
+                        <div class="act-title">USPS Delivery</div>
+                        <div class="act-time">3h ago • Verify</div>
                     </div>
-                    <span class="activity-badge badge-yellow">Check</span>
+                    <span class="act-badge badge-warn">Check</span>
                 </div>
             </div>
         </section>
+    </main>
 
-        <!-- Simple Trend Chart -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-title">Fraud Detection Trends</div>
-                <span style="color: var(--text-muted); font-size: 13px;">Last 7 days</span>
-            </div>
-            
-            <div class="chart-container">
-                <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
-                    <span>Threats Blocked Daily</span>
-                    <span style="color: var(--gold); font-weight: 600;">↓ 34% vs last week</span>
-                </div>
-                <div class="bar-chart">
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 40%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">M</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 65%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">T</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 45%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">W</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 80%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">T</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 55%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">F</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 90%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">S</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: 30%;">
-                            <div class="bar-fill" style="height: 100%;"></div>
-                        </div>
-                        <span class="bar-label">S</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Co-op Status -->
-        <section class="section" style="margin-bottom: 100px;">
-            <div class="section-header">
-                <div class="section-title">Co-op Intelligence</div>
-            </div>
-            <div style="background: linear-gradient(135deg, rgba(255,215,0,0.1), transparent); border: 1px solid rgba(255,215,0,0.2); border-radius: 16px; padding: 20px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-                    <div>
-                        <div style="font-size: 24px; font-weight: 700; color: var(--gold);">$7T+</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Fraud prevented annually</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 24px; font-weight: 700; color: var(--gold);">18.3x</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Detection ROI</div>
-                    </div>
-                </div>
-                <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-                    Real-time protection powered by 12,400+ co-op brands sharing anonymized fraud patterns.
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <div class="nav-container">
-            <button class="nav-item active" onclick="setNav(this, 'home')">
-                <div class="nav-icon">⚡</div>
-                <span>Protect</span>
-            </button>
-            <button class="nav-item" onclick="openScan()">
-                <div class="nav-icon" style="font-size: 32px; margin-top: -8px;">📷</div>
-                <span>Scan</span>
-            </button>
-            <button class="nav-item" onclick="showDetail('settings')">
-                <div class="nav-icon">⚙</div>
-                <span>Settings</span>
-            </button>
-        </div>
+    <!-- Bottom Nav -->
+    <nav class="nav">
+        <button class="nav-btn active" onclick="goHome()">
+            <span class="nav-icon">🛡</span>
+            <span>Protect</span>
+        </button>
+        <button class="nav-btn" onclick="openScan()">
+            <span class="nav-icon" style="font-size: 28px; margin-top: -2px;">📷</span>
+            <span>Scan</span>
+        </button>
+        <button class="nav-btn" onclick="showSettings()">
+            <span class="nav-icon">⚙</span>
+            <span>Settings</span>
+        </button>
     </nav>
 
     <!-- Scan Overlay -->
-    <div class="scan-overlay" id="scanOverlay">
-        <div class="scan-header">
-            <h3 style="font-weight: 600;">Scan QR Code</h3>
-            <button class="close-btn" onclick="closeScan()">✕</button>
+    <div class="overlay" id="scanOverlay">
+        <div class="overlay-header">
+            <h3 style="font-weight: 700;">Scan QR Code</h3>
+            <button class="close-x" onclick="closeScan()">✕</button>
         </div>
         <div class="scan-area">
-            <div class="scan-frame">
+            <div class="scan-box">
                 <div class="scan-line"></div>
-                <div class="scan-result" id="scanResult">
-                    <div style="width: 80px; height: 80px; background: rgba(34,197,94,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #4ADE80; font-size: 40px;">✓</div>
+                <div class="scan-overlay-content" id="scanResult">
+                    <div class="result-icon result-safe">✓</div>
                     <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Verified Safe</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 24px;">This QR code is from a verified sender</p>
-                    <button onclick="closeScan()" style="background: var(--gold); color: black; border: none; padding: 12px 32px; border-radius: 24px; font-weight: 600; cursor: pointer;">Continue</button>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px;">Legitimate sender confirmed</p>
+                    <button class="btn-primary" onclick="closeScan()" style="max-width: 200px;">Done</button>
                 </div>
             </div>
-            <p style="margin-top: 40px; color: var(--text-muted); font-size: 14px;">Point camera at QR code to verify</p>
+            <p style="color: var(--text-secondary);">Align QR code in frame</p>
         </div>
     </div>
 
     <!-- Detail Modal -->
-    <div class="modal" id="detailModal">
-        <div style="max-width: 480px; margin: 0 auto;">
-            <div class="modal-header">
-                <h2 id="modalTitle">Details</h2>
-                <button class="close-btn" onclick="closeModal()">✕</button>
-            </div>
-            <div class="modal-content" id="modalContent">
-                <!-- Dynamic content -->
+    <div class="modal" id="detailModal" onclick="if(event.target===this)closeDetail()">
+        <div style="max-width: 400px; margin: 0 auto;">
+            <button class="close-x" onclick="closeDetail()" style="margin-bottom: 16px;">✕</button>
+            <div class="modal-box" id="modalContent">
+                <!-- Dynamic -->
             </div>
         </div>
     </div>
 
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
     <script>
         // State
-        let vpnActive = false;
-        let scanActive = false;
+        let vpnOn = false;
         
-        // Toggle Quick Actions
-        function toggleAction(element, type) {
-            if (type === 'vpn') {
-                vpnActive = !vpnActive;
-                if (vpnActive) {
-                    element.classList.add('active-state');
-                    showToast('VPN Connected - Secure');
-                } else {
-                    element.classList.remove('active-state');
-                    showToast('VPN Disconnected');
-                }
-            } else if (type === 'scan') {
-                openScan();
-            }
+        // Toast helper
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
         }
         
-        // Scan Functionality
+        // Quick Actions
         function openScan() {
-            document.getElementById('scanOverlay').classList.add('active');
-            document.getElementById('scanResult').classList.remove('show');
+            document.getElementById('scanOverlay').classList.add('show');
+            document.getElementById('scanResult').classList.remove('done');
             
-            // Simulate scan completion
+            // Auto complete after 1.5s
             setTimeout(() => {
-                document.getElementById('scanResult').classList.add('show');
-            }, 2000);
+                document.getElementById('scanResult').classList.add('done');
+            }, 1500);
         }
         
         function closeScan() {
-            document.getElementById('scanOverlay').classList.remove('active');
+            document.getElementById('scanOverlay').classList.remove('show');
         }
         
-        // Navigation
-        function setNav(element, section) {
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
+        function toggleVPN() {
+            vpnOn = !vpnOn;
+            const btn = document.getElementById('vpnBtn');
+            const txt = document.getElementById('vpnText');
             
-            if (section === 'home') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (vpnOn) {
+                btn.classList.add('active');
+                txt.textContent = 'Connected';
+                showToast('VPN Connected');
+            } else {
+                btn.classList.remove('active');
+                txt.textContent = 'Secure conn';
+                showToast('VPN Disconnected');
             }
         }
         
-        // Show Detail Modal
+        function showPassword() {
+            const html = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 12px;">🔑</div>
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">No Leaks Found</h3>
+                    <p style="color: var(--text-secondary); font-size: 15px;">Your passwords are secure</p>
+                </div>
+                <div style="background: rgba(52,199,89,0.15); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+                    <div style="color: #34C759; font-weight: 600; margin-bottom: 4px;">✓ All Clear</div>
+                    <div style="color: var(--text-secondary); font-size: 13px;">Last checked: Just now</div>
+                </div>
+                <button class="btn-primary" onclick="showToast('Checking...'); setTimeout(()=>showToast('No leaks found'), 800)">Check Again</button>
+            `;
+            openModal(html);
+        }
+        
+        function showWifi() {
+            const html = `
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                    <div style="font-size: 40px;">📶</div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 18px;">Home_WiFi_5G</div>
+                        <div style="color: #34C759; font-size: 14px;">✓ Secure</div>
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <div>
+                        <div style="font-weight: 600;">Auto-Protect</div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Block unsafe networks</div>
+                    </div>
+                    <div class="toggle on" onclick="this.classList.toggle('on')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <div>
+                        <div style="font-weight: 600;">Alerts</div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Notify on threats</div>
+                    </div>
+                    <div class="toggle on" onclick="this.classList.toggle('on')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            `;
+            openModal(html);
+        }
+        
+        // Activity Details
         function showDetail(type) {
-            const modal = document.getElementById('detailModal');
-            const title = document.getElementById('modalTitle');
-            const content = document.getElementById('modalContent');
-            
-            const details = {
-                password: {
-                    title: 'Password Leak Check',
-                    html: `
-                        <div style="text-align: center; margin-bottom: 24px;">
-                            <div style="width: 80px; height: 80px; background: rgba(168,85,247,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 40px;">🗝</div>
-                            <h3 style="font-size: 20px; margin-bottom: 8px;">No Leaks Found</h3>
-                            <p style="color: var(--text-muted); font-size: 14px;">Your credentials haven't appeared in known data breaches</p>
-                        </div>
-                        <div style="background: rgba(34,197,94,0.1); border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid rgba(34,197,94,0.3);">
-                            <div style="display: flex; align-items: center; gap: 12px; color: #4ADE80; font-weight: 600; margin-bottom: 8px;">
-                                <span>✓</span> All Clear
-                            </div>
-                            <div style="font-size: 13px; color: var(--text-muted);">Last checked: 2 minutes ago</div>
-                        </div>
-                        <button onclick="closeModal(); showToast('Checking databases...');" style="width: 100%; padding: 14px; background: var(--light-gray); border: none; color: white; border-radius: 12px; font-weight: 600; cursor: pointer; margin-bottom: 12px;">Run New Check</button>
-                    `
+            const data = {
+                chase: {
+                    icon: 'act-safe',
+                    color: '#34C759',
+                    bg: 'rgba(52,199,89,0.2)',
+                    title: 'Chase Bank Alert',
+                    badge: 'Safe',
+                    badgeClass: 'badge-ok',
+                    meta: 'Transaction #4829 • Debit Card ending in 4582',
+                    details: 'MO Verified Safety Mark confirmed. Cryptographic signature valid. Sender ID: CHASE-SECURE-ALERTS.'
                 },
-                wifi: {
-                    title: 'Wi-Fi Security',
-                    html: `
-                        <div style="margin-bottom: 24px;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-                                <div style="width: 60px; height: 60px; background: rgba(249,115,22,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px;">📡</div>
-                                <div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Home_Network_5G</div>
-                                    <div style="color: #4ADE80; font-size: 14px;">✓ Secure Connection</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="space-y: 12px;">
-                            <div class="toggle-card">
-                                <div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Auto-Protect</div>
-                                    <div style="font-size: 13px; color: var(--text-muted);">Block unsafe networks automatically</div>
-                                </div>
-                                <div class="toggle active" onclick="this.classList.toggle('active')">
-                                    <div class="toggle-knob"></div>
-                                </div>
-                            </div>
-                            <div class="toggle-card">
-                                <div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Threat Alerts</div>
-                                    <div style="font-size: 13px; color: var(--text-muted);">Notify on suspicious activity</div>
-                                </div>
-                                <div class="toggle active" onclick="this.classList.toggle('active')">
-                                    <div class="toggle-knob"></div>
-                                </div>
-                            </div>
-                        </div>
-                    `
+                blocked: {
+                    icon: 'act-block',
+                    color: '#FF3B30',
+                    bg: 'rgba(255,59,48,0.2)',
+                    title: 'Fraudulent Message Blocked',
+                    badge: 'Blocked',
+                    badgeClass: 'badge-bad',
+                    meta: 'Unknown number • +1 (555) 123-4567',
+                    details: 'Phishing pattern detected. Claimed to be IRS demanding immediate payment. No MO Safety Mark present. Sender not in co-op database.'
                 },
-                settings: {
-                    title: 'Settings',
-                    html: `
-                        <div style="space-y: 8px;">
-                            <div style="padding: 16px; background: var(--light-gray); border-radius: 12px; margin-bottom: 12px; cursor: pointer;" onclick="showToast('Notifications updated')">
-                                <div style="font-weight: 600; margin-bottom: 4px;">Notifications</div>
-                                <div style="font-size: 13px; color: var(--text-muted);">Alerts for blocked threats</div>
-                            </div>
-                            <div style="padding: 16px; background: var(--light-gray); border-radius: 12px; margin-bottom: 12px; cursor: pointer;" onclick="showToast('Privacy settings saved')">
-                                <div style="font-weight: 600; margin-bottom: 4px;">Data Privacy</div>
-                                <div style="font-size: 13px; color: var(--text-muted);">Anonymized co-op sharing</div>
-                            </div>
-                            <div style="padding: 16px; background: rgba(239,68,68,0.1); border-radius: 12px; color: #F87171; cursor: pointer; text-align: center;" onclick="logout()">
-                                Sign Out
-                            </div>
-                        </div>
-                    `
+                delivery: {
+                    icon: 'act-warn',
+                    color: '#FFCC00',
+                    bg: 'rgba(255,204,0,0.2)',
+                    title: 'USPS Delivery Alert',
+                    badge: 'Verify',
+                    badgeClass: 'badge-warn',
+                    meta: 'Tracking #940011189956',
+                    details: 'Legitimate USPS notification. Delivery expected tomorrow by 8pm. Redelivery options available.'
                 }
             };
             
-            const detail = details[type];
-            title.textContent = detail.title;
-            content.innerHTML = detail.html;
-            modal.classList.add('active');
-        }
-        
-        // Activity Detail
-        function showActivityDetail(type) {
-            const modal = document.getElementById('detailModal');
-            const title = document.getElementById('modalTitle');
-            const content = document.getElementById('modalContent');
-            
-            title.textContent = 'Message Details';
-            content.innerHTML = `
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <div style="width: 80px; height: 80px; background: ${type === 'chase' ? 'rgba(34,197,94,0.2)' : type === 'blocked' ? 'rgba(239,68,68,0.2)' : 'rgba(255,193,7,0.2)'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 40px; color: ${type === 'chase' ? '#4ADE80' : type === 'blocked' ? '#F87171' : '#FCD34D'};">
+            const d = data[type];
+            const html = `
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                    <div style="width: 60px; height: 60px; background: ${d.bg}; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: ${d.color};">
                         ${type === 'chase' ? '✓' : type === 'blocked' ? '✕' : '!'}
                     </div>
-                    <h3 style="font-size: 20px; margin-bottom: 8px;">${type === 'chase' ? 'Chase Bank' : type === 'blocked' ? 'Blocked Threat' : 'USPS Delivery'}</h3>
-                    <p style="color: var(--text-muted); font-size: 14px;">
-                        ${type === 'chase' ? 'Transaction Alert #4829' : type === 'blocked' ? 'Phishing attempt detected' : 'Tracking #940011189956'}
-                    </p>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">${d.title}</h3>
+                        <span class="act-badge ${d.badgeClass}">${d.badge}</span>
+                    </div>
                 </div>
-                
-                <div style="background: var(--light-gray); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Verification Method</div>
-                    <div style="font-weight: 600; margin-bottom: 12px;">MO Verified Safety Mark</div>
-                    
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Sender ID</div>
-                    <div style="font-weight: 600; font-family: monospace; font-size: 14px;">${type === 'chase' ? 'CHASE-ALERTS-SECURE' : type === 'blocked' ? 'UNKNOWN-SUSPICIOUS' : 'USPS-VERIFY'}</div>
+                <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; margin-bottom: 16px;">
+                    <div style="color: var(--text-secondary); font-size: 13px; margin-bottom: 4px;">Sender Info</div>
+                    <div style="font-size: 15px; margin-bottom: 12px;">${d.meta}</div>
+                    <div style="color: var(--text-secondary); font-size: 13px; margin-bottom: 4px;">Verification</div>
+                    <div style="font-size: 15px; color: ${d.color};">${d.details}</div>
                 </div>
-                
-                <div style="display: flex; gap: 12px;">
-                    <button onclick="closeModal()" style="flex: 1; padding: 14px; background: var(--light-gray); border: none; color: white; border-radius: 12px; font-weight: 600; cursor: pointer;">Close</button>
-                    <button onclick="closeModal(); showToast('Report sent')" style="flex: 1; padding: 14px; background: ${type === 'blocked' ? 'rgba(239,68,68,0.2)' : 'var(--light-gray)'}; border: none; color: ${type === 'blocked' ? '#F87171' : 'white'}; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                        ${type === 'blocked' ? 'Report False Positive' : 'Report Issue'}
-                    </button>
-                </div>
+                <button class="btn-primary" onclick="closeDetail()">Close</button>
             `;
-            modal.classList.add('active');
+            openModal(html);
         }
         
-        function showAllActivity() {
-            showToast('Loading full history...');
+        // Modal
+        function openModal(html) {
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('detailModal').classList.add('open');
         }
         
-        function closeModal() {
-            document.getElementById('detailModal').classList.remove('active');
+        function closeDetail() {
+            document.getElementById('detailModal').classList.remove('open');
         }
         
-        // Toast Notification
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: var(--gray);
-                color: var(--gold);
-                padding: 12px 24px;
-                border-radius: 24px;
-                border: 1px solid rgba(255,215,0,0.3);
-                font-size: 14px;
-                font-weight: 600;
-                z-index: 300;
-                animation: slideDown 0.3s ease;
+        // Settings
+        function showSettings() {
+            const html = `
+                <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 24px;">Settings</h3>
+                <div class="toggle-row">
+                    <div>
+                        <div style="font-weight: 600;">Notifications</div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Blocked threat alerts</div>
+                    </div>
+                    <div class="toggle on" onclick="this.classList.toggle('on')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <div>
+                        <div style="font-weight: 600;">Co-op Sharing</div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Anonymized fraud data</div>
+                    </div>
+                    <div class="toggle on" onclick="this.classList.toggle('on')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <div>
+                        <div style="font-weight: 600;">Auto-Scan</div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Check all incoming links</div>
+                    </div>
+                    <div class="toggle" onclick="this.classList.toggle('on')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <button class="btn-primary" style="background: rgba(255,59,48,0.2); color: #FF3B30; margin-top: 32px;" onclick="location.reload()">Sign Out</button>
             `;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 2000);
+            openModal(html);
         }
         
-        // Logout
-        function logout() {
-            closeModal();
-            setTimeout(() => {
-                location.reload();
-            }, 500);
+        // Nav
+        function goHome() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
         }
-        
-        // Add animation styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideDown {
-                from { transform: translate(-50%, -100%); opacity: 0; }
-                to { transform: translate(-50%, 0); opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
