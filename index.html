@@ -2,784 +2,690 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
-    <title>Mobile Objex App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectReach - Customer Engagement Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
+                        accent: { 500: '#8b5cf6', 600: '#7c3aed' }
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slight': 'bounceSlight 2s infinite'
+                    },
+                    keyframes: {
+                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        bounceSlight: { '0%, 100%': { transform: 'translateY(-5%)' }, '50%': { transform: 'translateY(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        :root {
-            --gold: #FFD700;
-            --gold-light: #FFED4E;
-            --black: #000000;
-            --surface: #1C1C1E;
-            --surface-elevated: #2C2C2E;
-            --text: #FFFFFF;
-            --text-secondary: rgba(255,255,255,0.6);
-            --success: #30D158;
-            --danger: #FF453A;
-            --warning: #FF9F0A;
-            --info: #0A84FF;
-        }
-        
-        /* Mobile App Container */
-        .app-container {
-            max-width: 100%;
-            min-height: 100vh;
-            background: var(--black);
-            color: var(--text);
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        /* Safe areas for notches */
-        .safe-top { padding-top: env(safe-area-inset-top); }
-        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
-        
-        /* Views */
-        .view {
-            display: none;
-            min-height: 100vh;
-            padding-bottom: 100px; /* Space for bottom nav */
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .view.active { display: block; animation: fadeIn 0.3s; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Header */
-        .app-header {
-            position: sticky;
-            top: 0;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            border-bottom: 0.5px solid rgba(255,255,255,0.1);
-        }
-        
-        .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; }
-        .brand span { color: var(--gold); }
-        
-        .live-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(48,209,88,0.15);
-            color: var(--success);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        .pulse-dot {
-            width: 6px; height: 6px; background: var(--success); border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-        
-        /* Hero Card */
-        .hero-card {
-            margin: 16px;
-            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 24px;
-            padding: 28px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .score-circle {
-            width: 130px; height: 130px; margin: 0 auto 20px;
-            position: relative;
-        }
-        
-        .score-bg {
-            width: 100%; height: 100%; border-radius: 50%;
-            background: conic-gradient(var(--gold) 0% 98%, rgba(255,255,255,0.1) 0%);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 30px rgba(255,215,0,0.3);
-            animation: rotate 20s linear infinite;
-        }
-        
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        
-        .score-inner {
-            width: 110px; height: 110px; background: var(--black); border-radius: 50%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            animation: none;
-        }
-        
-        .score-num { font-size: 44px; font-weight: 800; color: var(--gold); line-height: 1; }
-        .score-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
-        
-        .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-        .hero-sub { color: var(--text-secondary); font-size: 15px; }
-        
-        /* Quick Stats Row */
-        .stats-scroll {
-            display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 16px;
-            scrollbar-width: none; -ms-overflow-style: none;
-        }
-        
-        .stats-scroll::-webkit-scrollbar { display: none; }
-        
-        .stat-pill {
-            background: var(--surface); border-radius: 16px; padding: 16px 20px;
-            min-width: 100px; text-align: center; border: 1px solid rgba(255,255,255,0.05);
-            flex-shrink: 0;
-        }
-        
-        .stat-value { font-size: 22px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
-        .stat-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        /* Feature Grid - Large Touch Targets */
-        .feature-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-bottom: 24px;
-        }
-        
-        .feature-card {
-            background: var(--surface); border-radius: 20px; padding: 24px 20px;
-            border: 1px solid rgba(255,255,255,0.05); position: relative;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            min-height: 140px; justify-content: center;
-            transition: transform 0.2s, background 0.2s;
-        }
-        
-        .feature-card:active { transform: scale(0.96); background: var(--surface-elevated); }
-        .feature-card.active { background: rgba(255,215,0,0.15); border-color: rgba(255,215,0,0.3); }
-        
-        .feature-icon {
-            width: 56px; height: 56px; border-radius: 16px;
-            display: flex; align-items: center; justify-content: center; font-size: 28px;
-            margin-bottom: 12px;
-        }
-        
-        .bg-blue { background: rgba(10,132,255,0.2); }
-        .bg-green { background: rgba(48,209,88,0.2); }
-        .bg-purple { background: rgba(175,82,222,0.2); }
-        .bg-orange { background: rgba(255,159,10,0.2); }
-        .bg-red { background: rgba(255,69,58,0.2); }
-        .bg-teal { background: rgba(48,176,199,0.2); }
-        
-        .feature-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-        .feature-desc { font-size: 13px; color: var(--text-secondary); }
-        
-        .feature-badge {
-            position: absolute; top: 12px; right: 12px;
-            width: 8px; height: 8px; border-radius: 50%; background: var(--gold);
-            box-shadow: 0 0 10px var(--gold); opacity: 0; transition: opacity 0.3s;
-        }
-        
-        .feature-card.active .feature-badge { opacity: 1; }
-        
-        /* Section Headers */
-        .section-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 16px; margin-bottom: 12px;
-        }
-        
-        .section-title { font-size: 20px; font-weight: 700; }
-        .section-action { color: var(--gold); font-size: 15px; font-weight: 600; }
-        
-        /* Activity Feed */
-        .feed-container { padding: 0 16px; margin-bottom: 100px; }
-        
-        .feed-card {
-            background: var(--surface); border-radius: 16px; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .feed-item {
-            display: flex; align-items: center; gap: 16px; padding: 18px 16px;
-            border-bottom: 0.5px solid rgba(255,255,255,0.05);
-            cursor: pointer; transition: background 0.2s;
-        }
-        
-        .feed-item:last-child { border-bottom: none; }
-        .feed-item:active { background: var(--surface-elevated); }
-        
-        .feed-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-            flex-shrink: 0;
-        }
-        
-        .feed-content { flex: 1; min-width: 0; }
-        .feed-title { font-weight: 600; font-size: 16px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .feed-meta { font-size: 14px; color: var(--text-secondary); }
-        
-        .feed-status {
-            font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 12px;
-            text-transform: uppercase; letter-spacing: 0.3px; flex-shrink: 0;
-        }
-        
-        .status-safe { background: rgba(48,209,88,0.2); color: var(--success); }
-        .status-danger { background: rgba(255,69,58,0.2); color: var(--danger); }
-        .status-warn { background: rgba(255,159,10,0.2); color: var(--warning); }
-        
-        /* Floating Action Button (Center) */
-        .fab-container {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.8));
-            padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
-            z-index: 1000;
-            border-top: 0.5px solid rgba(255,255,255,0.1);
-        }
-        
-        .fab-inner {
-            max-width: 400px; margin: 0 auto; display: flex; justify-content: space-around; align-items: center;
-        }
-        
-        .nav-btn {
-            background: none; border: none; color: var(--text-secondary);
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            font-size: 11px; font-weight: 600; padding: 8px 20px; cursor: pointer;
-            transition: all 0.2s; position: relative;
-        }
-        
-        .nav-btn.active { color: var(--gold); transform: translateY(-2px); }
-        
-        .nav-icon { font-size: 24px; line-height: 1; }
-        
-        .nav-btn-main {
-            background: var(--gold); color: black; width: 56px; height: 56px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin-top: -28px; box-shadow: 0 4px 20px rgba(255,215,0,0.4);
-            font-size: 24px; border: 4px solid var(--black);
-        }
-        
-        /* Modals */
-        .modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            z-index: 2000; flex-direction: column; animation: slideUp 0.3s;
-        }
-        
-        .modal.show { display: flex; }
-        
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .modal-header {
-            padding: 16px; display: flex; align-items: center; gap: 12px;
-            border-bottom: 0.5px solid rgba(255,255,255,0.1);
-        }
-        
-        .back-btn {
-            width: 36px; height: 36px; border-radius: 50%; background: var(--surface);
-            border: none; color: white; font-size: 20px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-        
-        .modal-content { flex: 1; overflow-y: auto; padding: 20px; }
-        
-        /* Scan View */
-        .scan-frame {
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px;
-        }
-        
-        .camera-box {
-            width: 280px; height: 280px; border: 3px solid var(--gold); border-radius: 24px;
-            overflow: hidden; position: relative; box-shadow: 0 0 40px rgba(255,215,0,0.2);
-        }
-        
-        .scan-line {
-            position: absolute; width: 100%; height: 3px; background: var(--gold);
-            box-shadow: 0 0 10px var(--gold); animation: scanMove 2s linear infinite;
-        }
-        
-        @keyframes scanMove { 0% { top: 0; } 100% { top: 100%; } }
-        
-        .scan-overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.95);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        
-        .scan-overlay.show { opacity: 1; pointer-events: all; }
-        
-        .result-circle {
-            width: 80px; height: 80px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 40px;
-            margin-bottom: 16px; animation: scaleIn 0.3s;
-        }
-        
-        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
-        
-        /* Detail View */
-        .detail-hero { text-align: center; padding: 40px 20px; }
-        .detail-icon-large { font-size: 64px; margin-bottom: 16px; }
-        .detail-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-        .detail-subtitle { color: var(--text-secondary); font-size: 17px; }
-        
-        .detail-grid {
-            display: grid; gap: 12px; margin-bottom: 24px;
-        }
-        
-        .detail-row {
-            background: var(--surface); padding: 18px; border-radius: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        
-        .detail-label { color: var(--text-secondary); font-size: 15px; }
-        .detail-value { font-weight: 700; font-size: 15px; font-family: monospace; }
-        
-        .btn-full {
-            width: 100%; padding: 18px; background: var(--gold); color: black;
-            border: none; border-radius: 14px; font-size: 17px; font-weight: 700;
-            margin-top: 8px; cursor: pointer;
-        }
-        
-        .btn-full:active { opacity: 0.9; transform: scale(0.98); }
-        
-        /* Toggle Switch */
-        .toggle-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--surface); padding: 20px; border-radius: 16px; margin-bottom: 12px;
-        }
-        
-        .toggle-text { font-weight: 600; margin-bottom: 4px; }
-        .toggle-sub { font-size: 14px; color: var(--text-secondary); }
-        
-        .toggle {
-            width: 52px; height: 32px; background: rgba(255,255,255,0.2);
-            border-radius: 16px; position: relative; cursor: pointer; transition: 0.3s;
-        }
-        
-        .toggle.on { background: var(--success); }
-        
-        .toggle-knob {
-            position: absolute; top: 2px; left: 2px; width: 28px; height: 28px;
-            background: white; border-radius: 50%; transition: transform 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        
-        .toggle.on .toggle-knob { transform: translateX(20px); }
-        
-        /* Toast */
-        .toast {
-            position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-100px);
-            background: var(--surface); color: var(--gold); padding: 14px 28px;
-            border-radius: 24px; border: 1px solid rgba(255,215,0,0.3);
-            font-weight: 700; z-index: 3000; opacity: 0; transition: all 0.3s;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        
-        /* New: Floating Widgets */
-        .threat-banner {
-            background: linear-gradient(90deg, rgba(255,69,58,0.2), rgba(255,69,58,0.05));
-            border-left: 3px solid var(--danger);
-            padding: 16px; margin: 0 16px 16px; border-radius: 12px;
-            display: flex; align-items: center; gap: 12px;
-        }
-        
-        .threat-icon { font-size: 24px; }
-        .threat-text { flex: 1; }
-        .threat-title { font-weight: 700; margin-bottom: 2px; }
-        .threat-sub { font-size: 13px; color: var(--text-secondary); }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .mesh-bg { background-color: #0f172a; background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%); }
+        .step-active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+        .phone-mockup { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        input:focus { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3); }
+        .btn-hover { transition: all 0.3s ease; }
+        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2); }
+        .progress-line { transition: width 0.5s ease; }
+        .toast { animation: slideInRight 0.3s ease-out; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
-<body>
-    <div class="app-container">
+<body class="font-sans antialiased text-slate-800 bg-slate-50">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-slate-200/50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="showSection('landing')">
+                    <div class="w-8 h-8 bg-gradient-to-br from-brand-500 to-accent-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">C</div>
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-accent-600">ConnectReach</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <button onclick="showSection('landing')" class="text-slate-600 hover:text-brand-600 font-medium transition">Home</button>
+                    <button onclick="showSection('register')" class="text-slate-600 hover:text-brand-600 font-medium transition">Register</button>
+                    <button onclick="showSection('brand-dashboard')" class="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition btn-hover">Brand Portal</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-2"></div>
+
+    <!-- SECTION 1: Landing Page -->
+    <section id="landing" class="min-h-screen pt-16 mesh-bg flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow" style="animation-delay: 1s"></div>
+        </div>
         
-        <!-- HOME VIEW -->
-        <div id="homeView" class="view active">
-            <header class="app-header safe-top">
-                <div class="brand">◊ Mobile<span>Objex</span></div>
-                <div class="live-indicator"><div class="pulse-dot"></div>Protected</div>
-            </header>
-            
-            <div class="hero-card">
-                <div class="score-circle">
-                    <div class="score-bg">
-                        <div class="score-inner">
-                            <div class="score-num" id="scoreDisplay">98</div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white space-y-8 animate-slide-up">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-medium">
+                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                        Live SMS Gateway Active
+                    </div>
+                    <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+                        Connect with Your <br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Customers Instantly</span>
+                    </h1>
+                    <p class="text-xl text-slate-300 max-w-lg">
+                        Seamless user registration meets powerful SMS campaign management. One platform, infinite connections.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="showSection('register')" class="px-8 py-4 bg-white text-brand-600 rounded-xl font-semibold hover:bg-slate-100 transition btn-hover flex items-center justify-center gap-2">
+                            Get Started <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button onclick="showSection('brand-dashboard')" class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/30 rounded-xl font-semibold hover:bg-white/20 transition btn-hover">
+                            Brand Login
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-6 text-sm text-slate-400 pt-4">
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> 99.9% Uptime</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> Global Coverage</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> Real-time Analytics</div>
+                    </div>
+                </div>
+                
+                <div class="relative animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="phone-mockup bg-slate-900 rounded-[3rem] p-4 max-w-sm mx-auto border-8 border-slate-800 relative">
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-2xl"></div>
+                        <div class="bg-white rounded-[2rem] overflow-hidden h-[600px] relative">
+                            <!-- Phone Screen Content -->
+                            <div class="bg-brand-600 p-6 pt-12 text-white">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><i class="fas fa-user"></i></div>
+                                    <div><div class="font-semibold">Welcome!</div><div class="text-xs opacity-80">Complete your profile</div></div>
+                                </div>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div class="h-10 bg-slate-100 rounded-lg animate-pulse"></div>
+                                <div class="h-10 bg-slate-100 rounded-lg animate-pulse"></div>
+                                <div class="h-10 bg-slate-100 rounded-lg animate-pulse"></div>
+                                <div class="h-32 bg-slate-100 rounded-lg animate-pulse"></div>
+                                <button class="w-full py-3 bg-brand-600 text-white rounded-lg font-medium">Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Floating Elements -->
+                    <div class="absolute -top-4 -right-4 bg-green-500 text-white p-3 rounded-2xl shadow-lg animate-bounce-slight">
+                        <i class="fas fa-sms text-2xl"></i>
+                    </div>
+                    <div class="absolute -bottom-4 -left-4 bg-white p-4 rounded-2xl shadow-lg animate-bounce-slight" style="animation-delay: 1s">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600"><i class="fas fa-check"></i></div>
+                            <div><div class="text-xs text-slate-500">Campaign Sent</div><div class="font-bold text-slate-800">2.4k Users</div></div>
                         </div>
                     </div>
                 </div>
-                <div class="hero-title">Security Active</div>
-                <div class="hero-sub">AI verification scanning all messages</div>
             </div>
-            
-            <!-- Live Threat Banner (New Feature) -->
-            <div class="threat-banner" id="threatBanner" onclick="showThreatDetails()" style="display: none;">
-                <div class="threat-icon">⚠️</div>
-                <div class="threat-text">
-                    <div class="threat-title">Scam Wave Detected</div>
-                    <div class="threat-sub">Fake delivery SMS in your area</div>
-                </div>
-                <span style="color: var(--danger);">→</span>
-            </div>
-            
-            <div class="stats-scroll">
-                <div class="stat-pill">
-                    <div class="stat-value">2.4k</div>
-                    <div class="stat-label">Safe</div>
-                </div>
-                <div class="stat-pill">
-                    <div class="stat-value" style="color: var(--danger);">23</div>
-                    <div class="stat-label">Blocked</div>
-                </div>
-                <div class="stat-pill">
-                    <div class="stat-value" style="color: var(--info);">12k+</div>
-                    <div class="stat-label">Co-op</div>
-                </div>
-                <div class="stat-pill">
-                    <div class="stat-value" style="color: var(--warning);">5</div>
-                    <div class="stat-label">Family</div>
-                </div>
-            </div>
-            
-            <div class="section-header">
-                <div class="section-title">Quick Actions</div>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-card" onclick="openScan()">
-                    <div class="feature-badge"></div>
-                    <div class="feature-icon bg-blue">📷</div>
-                    <div class="feature-title">Scan Code</div>
-                    <div class="feature-desc">Verify QR</div>
-                </div>
-                
-                <div class="feature-card" id="vpnCard" onclick="toggleVPN(this)">
-                    <div class="feature-badge"></div>
-                    <div class="feature-icon bg-green">🔒</div>
-                    <div class="feature-title">Secure VPN</div>
-                    <div class="feature-desc" id="vpnStatus">Tap to connect</div>
-                </div>
-                
-                <div class="feature-card" onclick="showFeature('darkweb')">
-                    <div class="feature-icon bg-red">🔍</div>
-                    <div class="feature-title">Dark Web</div>
-                    <div class="feature-desc">Leak scan</div>
-                </div>
-                
-                <div class="feature-card" onclick="showFeature('identity')">
-                    <div class="feature-icon bg-purple">🛡️</div>
-                    <div class="feature-title">Identity</div>
-                    <div class="feature-desc">SSN Monitor</div>
-                </div>
-                
-                <div class="feature-card" onclick="showFeature('family')">
-                    <div class="feature-icon bg-teal">👨‍👩‍👧‍👦</div>
-                    <div class="feature-title">Family</div>
-                    <div class="feature-desc">5 protected</div>
-                </div>
-                
-                <div class="feature-card" onclick="showFeature('vault')">
-                    <div class="feature-icon bg-orange">🗝️</div>
-                    <div class="feature-title">Vault</div>
-                    <div class="feature-desc">12 passwords</div>
-                </div>
-            </div>
-            
-            <div class="section-header">
-                <div class="section-title">Protection Log</div>
-                <div class="section-action" onclick="clearFeed()">Clear</div>
-            </div>
-            
-            <div class="feed-container">
-                <div class="feed-card" id="feedList">
-                    <div class="feed-item" onclick="showDetail('chase')">
-                        <div class="feed-icon bg-green" style="color: var(--success);">✓</div>
-                        <div class="feed-content">
-                            <div class="feed-title">Chase Fraud Alert</div>
-                            <div class="feed-meta">Legitimate • Card • 2m ago</div>
-                        </div>
-                        <div class="feed-status status-safe">Safe</div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: User Registration Flow -->
+    <section id="register" class="min-h-screen pt-16 bg-slate-50 hidden">
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <!-- Progress Steps -->
+            <div class="mb-12">
+                <div class="flex items-center justify-between relative">
+                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full">
+                        <div id="progress-line" class="h-full bg-brand-600 rounded-full progress-line" style="width: 0%"></div>
                     </div>
                     
-                    <div class="feed-item" onclick="showDetail('irs')">
-                        <div class="feed-icon bg-red" style="color: var(--danger);">✕</div>
-                        <div class="feed-content">
-                            <div class="feed-title">IRS Scam Blocked</div>
-                            <div class="feed-meta">Phishing SMS • Auto-blocked</div>
-                        </div>
-                        <div class="feed-status status-danger">Blocked</div>
+                    <div class="step-circle flex flex-col items-center" data-step="1">
+                        <div class="w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">1</div>
+                        <span class="text-sm font-medium mt-2 text-brand-600">Account</span>
+                    </div>
+                    <div class="step-circle flex flex-col items-center" data-step="2">
+                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">2</div>
+                        <span class="text-sm font-medium mt-2 text-slate-500">Profile</span>
+                    </div>
+                    <div class="step-circle flex flex-col items-center" data-step="3">
+                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">3</div>
+                        <span class="text-sm font-medium mt-2 text-slate-500">Verify</span>
+                    </div>
+                    <div class="step-circle flex flex-col items-center" data-step="4">
+                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">4</div>
+                        <span class="text-sm font-medium mt-2 text-slate-500">Done</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Container -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-500 to-accent-500"></div>
+                
+                <!-- Step 1: Account Details -->
+                <div id="step-1" class="step-content space-y-6 animate-fade-in">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Create Account</h2>
+                        <p class="text-slate-500">Start your journey with ConnectReach</p>
                     </div>
                     
-                    <div class="feed-item" onclick="showDetail('delivery')">
-                        <div class="feed-icon bg-orange" style="color: var(--warning);">!</div>
-                        <div class="feed-content">
-                            <div class="feed-title">USPS Delivery</div>
-                            <div class="feed-meta">Verify tracking # • 3h ago</div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+                            <div class="relative">
+                                <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                                <input type="email" id="reg-email" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200 transition-all" placeholder="you@example.com">
+                            </div>
                         </div>
-                        <div class="feed-status status-warn">Check</div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
+                            <div class="relative">
+                                <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                                <input type="password" id="reg-password" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200 transition-all" placeholder="••••••••">
+                            </div>
+                            <div class="mt-2 flex gap-1">
+                                <div class="h-1 flex-1 bg-slate-200 rounded-full overflow-hidden"><div id="strength-bar" class="h-full bg-red-500 w-0 transition-all duration-300"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="nextStep(2)" class="w-full py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover mt-6">
+                        Continue <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                        <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-slate-500">Or continue with</span></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="flex items-center justify-center gap-2 py-3 border border-slate-300 rounded-xl hover:bg-slate-50 transition btn-hover">
+                            <i class="fab fa-google text-red-500"></i> Google
+                        </button>
+                        <button class="flex items-center justify-center gap-2 py-3 border border-slate-300 rounded-xl hover:bg-slate-50 transition btn-hover">
+                            <i class="fab fa-apple text-slate-800"></i> Apple
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- BOTTOM NAV -->
-        <div class="fab-container">
-            <div class="fab-inner">
-                <button class="nav-btn active" onclick="switchTab('home')">
-                    <span class="nav-icon">🛡️</span>
-                    <span>Protect</span>
-                </button>
-                
-                <button class="nav-btn nav-btn-main" onclick="openScan()">
-                    <span style="font-size: 28px;">📷</span>
-                </button>
-                
-                <button class="nav-btn" onclick="showSettings()">
-                    <span class="nav-icon">⚙️</span>
-                    <span>Settings</span>
-                </button>
-            </div>
-        </div>
-        
-        <!-- SCAN MODAL -->
-        <div id="scanModal" class="modal">
-            <div class="modal-header">
-                <button class="back-btn" onclick="closeScan()">←</button>
-                <h3 style="font-weight: 700; flex: 1; text-align: center;">Scan Safety Mark</h3>
-                <div style="width: 36px;"></div>
-            </div>
-            <div class="scan-frame">
-                <div class="camera-box">
-                    <div class="scan-line"></div>
-                    <div class="scan-overlay" id="scanResult">
-                        <div class="result-circle" id="resultIcon" style="background: rgba(48,209,88,0.2); color: var(--success);">✓</div>
-                        <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;" id="resultTitle">Verified Safe</h3>
-                        <p style="color: var(--text-secondary); margin-bottom: 24px;" id="resultDesc">Cryptographically signed by Chase Bank</p>
-                        <button class="btn-full" onclick="closeScan()" style="max-width: 200px;">Done</button>
+
+                <!-- Step 2: Profile -->
+                <div id="step-2" class="step-content space-y-6 hidden animate-fade-in">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Complete Profile</h2>
+                        <p class="text-slate-500">Tell us a bit about yourself</p>
                     </div>
-                </div>
-                <p style="color: var(--text-secondary); margin-top: 32px;">Align QR code within frame</p>
-            </div>
-        </div>
-        
-        <!-- DETAIL MODAL -->
-        <div id="detailModal" class="modal">
-            <div class="modal-header">
-                <button class="back-btn" onclick="closeDetail()">←</button>
-                <h3 style="font-weight: 700; flex: 1; text-align: center;">Message Details</h3>
-                <div style="width: 36px;"></div>
-            </div>
-            <div class="modal-content" id="detailBody">
-                <!-- Dynamic -->
-            </div>
-        </div>
-        
-        <!-- SETTINGS MODAL -->
-        <div id="settingsModal" class="modal">
-            <div class="modal-header">
-                <button class="back-btn" onclick="closeSettings()">←</button>
-                <h3 style="font-weight: 700; flex: 1; text-align: center;">Settings</h3>
-                <div style="width: 36px;"></div>
-            </div>
-            <div class="modal-content">
-                <div class="toggle-row">
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">First Name</label>
+                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="John">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Last Name</label>
+                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="Doe">
+                        </div>
+                    </div>
+                    
                     <div>
-                        <div class="toggle-text">Auto-Scan Messages</div>
-                        <div class="toggle-sub">Check all incoming SMS</div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 font-medium">+1</span>
+                            <input type="tel" id="phone-number" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="(555) 000-0000">
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Required for SMS campaign reception</p>
                     </div>
-                    <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
-                </div>
-                <div class="toggle-row">
+                    
                     <div>
-                        <div class="toggle-text">Co-op Sharing</div>
-                        <div class="toggle-sub">Anonymized threat data</div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Company (Optional)</label>
+                        <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="Acme Inc.">
                     </div>
-                    <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
-                </div>
-                <div class="toggle-row">
-                    <div>
-                        <div class="toggle-text">Family Alerts</div>
-                        <div class="toggle-sub">Notify when family threatened</div>
+                    
+                    <div class="flex gap-4 mt-6">
+                        <button onclick="prevStep(1)" class="flex-1 py-4 border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition">Back</button>
+                        <button onclick="nextStep(3)" class="flex-1 py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover">Continue</button>
                     </div>
-                    <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
                 </div>
-                
-                <button class="btn-full" onclick="logout()" style="background: rgba(255,69,58,0.2); color: var(--danger); margin-top: 32px;">Sign Out</button>
+
+                <!-- Step 3: Verification -->
+                <div id="step-3" class="step-content space-y-6 hidden animate-fade-in">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-600 text-2xl">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Verify Phone</h2>
+                        <p class="text-slate-500">Enter the 6-digit code sent to your phone</p>
+                    </div>
+                    
+                    <div class="flex justify-center gap-3 mb-6">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="0">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="1">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="2">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="3">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="4">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="5">
+                    </div>
+                    
+                    <div class="text-center text-sm text-slate-500 mb-6">
+                        Didn't receive code? <button class="text-brand-600 font-medium hover:underline">Resend (30s)</button>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button onclick="prevStep(2)" class="flex-1 py-4 border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition">Back</button>
+                        <button onclick="nextStep(4)" class="flex-1 py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover">Verify</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Success -->
+                <div id="step-4" class="step-content text-center hidden animate-fade-in">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600 text-3xl animate-bounce">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-800 mb-3">Welcome Aboard!</h2>
+                    <p class="text-slate-500 mb-8 max-w-md mx-auto">Your account is ready. You'll receive confirmation via SMS shortly.</p>
+                    
+                    <div class="bg-slate-50 rounded-xl p-6 mb-8 text-left max-w-md mx-auto border border-slate-200">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fas fa-envelope text-brand-600"></i>
+                            <span class="text-sm text-slate-600">Confirmation email sent</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-sms text-brand-600"></i>
+                            <span class="text-sm text-slate-600">SMS verification completed</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showSection('brand-dashboard')" class="px-8 py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover">
+                        Go to Dashboard <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        
+    </section>
+
+    <!-- SECTION 3: Brand Dashboard -->
+    <section id="brand-dashboard" class="min-h-screen pt-16 bg-slate-50 hidden">
+        <div class="flex h-screen pt-16 -mt-16">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col">
+                <div class="p-6 border-b border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-white font-bold">B</div>
+                        <div>
+                            <div class="font-semibold text-slate-800">Brand Admin</div>
+                            <div class="text-xs text-slate-500">Pro Plan</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+                    <button onclick="switchTab('campaigns')" class="w-full flex items-center gap-3 px-4 py-3 text-brand-600 bg-brand-50 rounded-lg font-medium transition tab-btn" data-tab="campaigns">
+                        <i class="fas fa-bullhorn w-5"></i> Campaigns
+                    </button>
+                    <button onclick="switchTab('audience')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition tab-btn" data-tab="audience">
+                        <i class="fas fa-users w-5"></i> Audience
+                    </button>
+                    <button onclick="switchTab('analytics')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition tab-btn" data-tab="analytics">
+                        <i class="fas fa-chart-line w-5"></i> Analytics
+                    </button>
+                    <button onclick="switchTab('settings')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition tab-btn" data-tab="settings">
+                        <i class="fas fa-cog w-5"></i> Settings
+                    </button>
+                </nav>
+                
+                <div class="p-4 border-t border-slate-100">
+                    <div class="bg-gradient-to-r from-brand-500 to-accent-500 rounded-xl p-4 text-white">
+                        <div class="text-sm font-medium mb-1">SMS Credits</div>
+                        <div class="text-2xl font-bold mb-2">24,500</div>
+                        <div class="w-full bg-white/20 rounded-full h-2 mb-2">
+                            <div class="bg-white rounded-full h-2" style="width: 75%"></div>
+                        </div>
+                        <button class="text-xs text-white/90 hover:text-white underline">Buy More</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto bg-slate-50 p-4 md:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-800">SMS Campaigns</h1>
+                        <p class="text-slate-500 text-sm mt-1">Create and manage your messaging campaigns</p>
+                    </div>
+                    <button onclick="openCampaignModal()" class="px-6 py-3 bg-brand-600 text-white rounded-xl font-medium hover:bg-brand-700 transition btn-hover flex items-center gap-2">
+                        <i class="fas fa-plus"></i> New Campaign
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600"><i class="fas fa-paper-plane text-xl"></i></div>
+                            <span class="text-green-600 text-sm font-medium flex items-center gap-1"><i class="fas fa-arrow-up"></i> 12%</span>
+                        </div>
+                        <div class="text-3xl font-bold text-slate-800 mb-1">48.2k</div>
+                        <div class="text-sm text-slate-500">Messages Sent</div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600"><i class="fas fa-check-double text-xl"></i></div>
+                            <span class="text-green-600 text-sm font-medium flex items-center gap-1"><i class="fas fa-arrow-up"></i> 8%</span>
+                        </div>
+                        <div class="text-3xl font-bold text-slate-800 mb-1">94.3%</div>
+                        <div class="text-sm text-slate-500">Delivery Rate</div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600"><i class="fas fa-reply text-xl"></i></div>
+                            <span class="text-green-600 text-sm font-medium flex items-center gap-1"><i class="fas fa-arrow-up"></i> 24%</span>
+                        </div>
+                        <div class="text-3xl font-bold text-slate-800 mb-1">32.8%</div>
+                        <div class="text-sm text-slate-500">Response Rate</div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600"><i class="fas fa-users text-xl"></i></div>
+                            <span class="text-slate-500 text-sm font-medium">Active</span>
+                        </div>
+                        <div class="text-3xl font-bold text-slate-800 mb-1">12.5k</div>
+                        <div class="text-sm text-slate-500">Subscribers</div>
+                    </div>
+                </div>
+
+                <!-- Campaign List -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                        <h3 class="font-semibold text-slate-800">Recent Campaigns</h3>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg hover:bg-slate-50 transition"><i class="fas fa-filter mr-2"></i>Filter</button>
+                            <button class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg hover:bg-slate-50 transition"><i class="fas fa-download mr-2"></i>Export</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-slate-600 text-sm">
+                                <tr>
+                                    <th class="px-6 py-4 font-medium">Campaign</th>
+                                    <th class="px-6 py-4 font-medium">Status</th>
+                                    <th class="px-6 py-4 font-medium">Recipients</th>
+                                    <th class="px-6 py-4 font-medium">Sent</th>
+                                    <th class="px-6 py-4 font-medium">Open Rate</th>
+                                    <th class="px-6 py-4 font-medium">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100" id="campaign-list">
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium text-slate-800">Summer Sale 2024</div>
+                                        <div class="text-sm text-slate-500">Promotional • 2 hours ago</div>
+                                    </td>
+                                    <td class="px-6 py-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Completed</span></td>
+                                    <td class="px-6 py-4 text-slate-600">12,450</td>
+                                    <td class="px-6 py-4 text-slate-600">11,892</td>
+                                    <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-16 bg-slate-200 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 68%"></div></div><span class="text-sm text-slate-600">68%</span></div></td>
+                                    <td class="px-6 py-4"><button class="text-slate-400 hover:text-brand-600 transition"><i class="fas fa-ellipsis-v"></i></button></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium text-slate-800">Welcome Series</div>
+                                        <div class="text-sm text-slate-500">Automated • Active</div>
+                                    </td>
+                                    <td class="px-6 py-4"><span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Running</span></td>
+                                    <td class="px-6 py-4 text-slate-600">8,230</td>
+                                    <td class="px-6 py-4 text-slate-600">8,230</td>
+                                    <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-16 bg-slate-200 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 82%"></div></div><span class="text-sm text-slate-600">82%</span></div></td>
+                                    <td class="px-6 py-4"><button class="text-slate-400 hover:text-brand-600 transition"><i class="fas fa-ellipsis-v"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- New Campaign Modal -->
+    <div id="campaign-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-slide-up">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white">
+                <h3 class="text-xl font-bold text-slate-800">Create SMS Campaign</h3>
+                <button onclick="closeCampaignModal()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center transition"><i class="fas fa-times text-slate-500"></i></button>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Campaign Name</label>
+                    <input type="text" id="campaign-name" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="e.g., Flash Sale Friday">
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Audience Segment</label>
+                        <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all bg-white">
+                            <option>All Subscribers (12.5k)</option>
+                            <option>VIP Customers (2.3k)</option>
+                            <option>New Users (5.1k)</option>
+                            <option>Inactive (1.8k)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Schedule</label>
+                        <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all bg-white">
+                            <option>Send Immediately</option>
+                            <option>Schedule for Later</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Message Content</label>
+                    <div class="relative">
+                        <textarea id="campaign-message" rows="4" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all resize-none" maxlength="160" placeholder="Type your message here..."></textarea>
+                        <div class="absolute bottom-3 right-3 text-xs text-slate-400"><span id="char-count">0</span>/160 chars</div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Tip: Personalize with {'{name}'} or {'{company}'}</p>
+                </div>
+                
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                    <div class="text-sm font-medium text-slate-700 mb-2">Preview</div>
+                    <div class="bg-white rounded-lg p-4 shadow-sm border border-slate-200 max-w-sm">
+                        <div class="flex items-center gap-2 mb-2 text-xs text-slate-500">
+                            <i class="fas fa-sms"></i> SMS Preview
+                        </div>
+                        <p class="text-slate-800 text-sm" id="message-preview">Your message will appear here...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-slate-100 flex justify-end gap-3 sticky bottom-0 bg-white">
+                <button onclick="closeCampaignModal()" class="px-6 py-3 border border-slate-300 rounded-xl font-medium text-slate-700 hover:bg-slate-50 transition">Cancel</button>
+                <button onclick="sendCampaign()" class="px-6 py-3 bg-brand-600 text-white rounded-xl font-medium hover:bg-brand-700 transition btn-hover flex items-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Send Campaign
+                </button>
+            </div>
+        </div>
     </div>
-    
-    <div class="toast" id="toast"></div>
-    
+
     <script>
-        let vpnEnabled = false;
-        let currentThreats = 1;
-        
-        // Show threat banner after 2 seconds
-        setTimeout(() => {
-            document.getElementById('threatBanner').style.display = 'flex';
-        }, 2000);
-        
-        function toggleVPN(card) {
-            vpnEnabled = !vpnEnabled;
-            const badge = card.querySelector('.feature-badge');
-            const status = document.getElementById('vpnStatus');
-            
-            if (vpnEnabled) {
-                card.classList.add('active');
-                status.textContent = 'Connected • 45ms';
-                showToast('🔒 Secure VPN Active');
-            } else {
-                card.classList.remove('active');
-                status.textContent = 'Tap to connect';
-                showToast('VPN Disconnected');
-            }
-        }
-        
-        function openScan() {
-            document.getElementById('scanModal').classList.add('show');
-            document.getElementById('scanResult').classList.remove('show');
-            
-            // Simulate scan
-            setTimeout(() => {
-                const isSafe = Math.random() > 0.3;
-                const result = document.getElementById('scanResult');
-                const icon = document.getElementById('resultIcon');
-                const title = document.getElementById('resultTitle');
-                const desc = document.getElementById('resultDesc');
-                
-                if (isSafe) {
-                    icon.style.background = 'rgba(48,209,88,0.2)';
-                    icon.style.color = 'var(--success)';
-                    icon.textContent = '✓';
-                    title.textContent = 'Verified Safe';
-                    desc.textContent = 'Chase Bank • Cryptographically signed';
-                } else {
-                    icon.style.background = 'rgba(255,69,58,0.2)';
-                    icon.style.color = 'var(--danger)';
-                    icon.textContent = '✕';
-                    title.textContent = 'Threat Detected';
-                    desc.textContent = 'No MO Safety Mark found';
-                }
-                result.classList.add('show');
-            }, 1500);
-        }
-        
-        function closeScan() {
-            document.getElementById('scanModal').classList.remove('show');
-        }
-        
-        function showDetail(type) {
-            const modal = document.getElementById('detailModal');
-            const body = document.getElementById('detailBody');
-            
-            const data = {
-                chase: {
-                    icon: '✓', color: 'var(--success)', bg: 'rgba(48,209,88,0.2)',
-                    title: 'Chase Fraud Alert', status: 'VERIFIED SAFE',
-                    meta: 'Transaction authorized', time: '2 minutes ago',
-                    details: 'Face ID confirmed • Card ending 4582 • New York, NY',
-                    hash: '0x8f3d...2a9b'
-                },
-                irs: {
-                    icon: '✕', color: 'var(--danger)', bg: 'rgba(255,69,58,0.2)',
-                    title: 'IRS Scam Blocked', status: 'FRAUD BLOCKED',
-                    meta: 'Phishing attempt', time: '1 hour ago',
-                    details: 'Requested gift cards • Threatened arrest • Number reported 234x',
-                    hash: '0x9e2c...1f4d'
-                },
-                delivery: {
-                    icon: '!', color: 'var(--warning)', bg: 'rgba(255,159,10,0.2)',
-                    title: 'USPS Delivery', status: 'MANUAL REVIEW',
-                    meta: 'Tracking verification', time: '3 hours ago',
-                    details: 'Valid format but unverified origin • Cross-check recommended',
-                    hash: '0x7a1b...9e3c'
-                }
-            };
-            
-            const d = data[type];
-            body.innerHTML = `
-                <div class="detail-hero">
-                    <div class="detail-icon-large" style="color: ${d.color};">${d.icon}</div>
-                    <div class="detail-title" style="color: ${d.color};">${d.title}</div>
-                    <div class="detail-subtitle">${d.meta} • ${d.time}</div>
-                </div>
-                <div class="detail-grid">
-                    <div class="detail-row">
-                        <span class="detail-label">Status</span>
-                        <span class="detail-value" style="color: ${d.color};">${d.status}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Verification ID</span>
-                        <span class="detail-value" style="font-size: 13px;">${d.hash}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Consensus</span>
-                        <span class="detail-value">12,400 nodes</span>
-                    </div>
-                </div>
-                <div style="background: var(--surface); padding: 20px; border-radius: 16px; margin-bottom: 24px;">
-                    <div style="color: var(--text-secondary); font-size: 13px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Analysis</div>
-                    <div style="line-height: 1.5;">${d.details}</div>
-                </div>
-                <button class="btn-full" onclick="closeDetail()">Close</button>
-            `;
-            modal.classList.add('show');
-        }
-        
-        function closeDetail() {
-            document.getElementById('detailModal').classList.remove('show');
-        }
-        
-        function showFeature(type) {
-            if (type === 'darkweb') {
-                showToast('🔍 Scanning dark web databases...');
-                setTimeout(() => showToast('✓ No leaks found for your email'), 1500);
-            } else if (type === 'identity') {
-                showToast('🛡️ Identity monitoring active');
-            } else if (type === 'family') {
-                showDetail('family');
-            } else if (type === 'vault') {
-                showToast('🔐 Secure vault unlocked');
-            }
-        }
-        
-        function showThreatDetails() {
-            showDetail('irs');
-            document.getElementById('threatBanner').style.display = 'none';
-        }
-        
-        function showSettings() {
-            document.getElementById('settingsModal').classList.add('show');
-        }
-        
-        function closeSettings() {
-            document.getElementById('settingsModal').classList.remove('show');
-        }
-        
-        function clearFeed() {
-            document.getElementById('feedList').innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-secondary);">No recent activity</div>';
-            showToast('Log cleared');
-        }
-        
-        function switchTab(tab) {
-            // Already on home
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
             window.scrollTo(0, 0);
         }
-        
-        function logout() {
-            closeSettings();
-            showToast('Signed out');
-            setTimeout(() => location.reload(), 1000);
+
+        // Registration Flow
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progress-line').style.width = progress + '%';
+            
+            document.querySelectorAll('.step-circle').forEach((circle, index) => {
+                const stepNum = index + 1;
+                const num = circle.querySelector('div');
+                const label = circle.querySelector('span');
+                
+                if (stepNum < currentStep) {
+                    num.className = 'w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all';
+                    num.innerHTML = '<i class="fas fa-check"></i>';
+                    label.className = 'text-sm font-medium mt-2 text-green-600';
+                } else if (stepNum === currentStep) {
+                    num.className = 'w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all';
+                    num.innerHTML = stepNum;
+                    label.className = 'text-sm font-medium mt-2 text-brand-600';
+                } else {
+                    num.className = 'w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all';
+                    num.innerHTML = stepNum;
+                    label.className = 'text-sm font-medium mt-2 text-slate-500';
+                }
+            });
         }
-        
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
+
+        function nextStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            updateProgress();
+            
+            if (step === 3) initOTP();
         }
+
+        function prevStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            updateProgress();
+        }
+
+        // OTP Input Handling
+        function initOTP() {
+            const inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach((input, index) => {
+                input.addEventListener('keyup', (e) => {
+                    if (e.key >= 0 && e.key <= 9) {
+                        if (index < inputs.length - 1) inputs[index + 1].focus();
+                    } else if (e.key === 'Backspace' && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+            if (inputs.length > 0) inputs[0].focus();
+        }
+
+        // Password Strength
+        document.getElementById('reg-password')?.addEventListener('input', function(e) {
+            const val = e.target.value;
+            const bar = document.getElementById('strength-bar');
+            let strength = 0;
+            if (val.length > 5) strength += 25;
+            if (val.length > 8) strength += 25;
+            if (/[A-Z]/.test(val)) strength += 25;
+            if (/[0-9]/.test(val)) strength += 25;
+            
+            bar.style.width = strength + '%';
+            bar.className = 'h-full transition-all duration-300 ' + 
+                (strength < 50 ? 'bg-red-500' : strength < 75 ? 'bg-yellow-500' : 'bg-green-500');
+        });
+
+        // Campaign Modal
+        function openCampaignModal() {
+            document.getElementById('campaign-modal').classList.remove('hidden');
+        }
+
+        function closeCampaignModal() {
+            document.getElementById('campaign-modal').classList.add('hidden');
+        }
+
+        // Message Character Count & Preview
+        document.getElementById('campaign-message')?.addEventListener('input', function(e) {
+            const count = e.target.value.length;
+            document.getElementById('char-count').textContent = count;
+            document.getElementById('message-preview').textContent = e.target.value || 'Your message will appear here...';
+        });
+
+        function sendCampaign() {
+            const name = document.getElementById('campaign-name').value;
+            if (!name) {
+                showToast('Please enter a campaign name', 'error');
+                return;
+            }
+            
+            closeCampaignModal();
+            showToast(`Campaign "${name}" is being sent!`, 'success');
+            
+            // Add to table (simulation)
+            setTimeout(() => {
+                const tbody = document.getElementById('campaign-list');
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-slate-50 transition animate-fade-in';
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="font-medium text-slate-800">${name}</div>
+                        <div class="text-sm text-slate-500">Promotional • Just now</div>
+                    </td>
+                    <td class="px-6 py-4"><span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Sending</span></td>
+                    <td class="px-6 py-4 text-slate-600">12,500</td>
+                    <td class="px-6 py-4 text-slate-600">--</td>
+                    <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-16 bg-slate-200 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 0%"></div></div><span class="text-sm text-slate-600">--</span></div></td>
+                    <td class="px-6 py-4"><button class="text-slate-400 hover:text-brand-600 transition"><i class="fas fa-ellipsis-v"></i></button></td>
+                `;
+                tbody.insertBefore(row, tbody.firstChild);
+            }, 500);
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            toast.className = `toast ${colors} text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 min-w-[300px]`;
+            toast.innerHTML = `<i class="fas ${icon}"></i><span class="font-medium">${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('bg-brand-50', 'text-brand-600');
+                    btn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                } else {
+                    btn.classList.remove('bg-brand-50', 'text-brand-600');
+                    btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                }
+            });
+        }
+
+        // Close modal on outside click
+        document.getElementById('campaign-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeCampaignModal();
+        });
+
+        // Initialize
+        updateProgress();
     </script>
 </body>
 </html>
