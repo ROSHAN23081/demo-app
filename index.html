@@ -3,527 +3,698 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectReach - Customer Engagement Platform</title>
+    <title>Mobile Objex - Fraud-Free Messaging</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
-                        accent: { 500: '#8b5cf6', 600: '#7c3aed' }
-                    },
-                    animation: {
-                        'slide-up': 'slideUp 0.5s ease-out',
-                        'fade-in': 'fadeIn 0.3s ease-out',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'bounce-slight': 'bounceSlight 2s infinite'
-                    },
-                    keyframes: {
-                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        bounceSlight: { '0%, 100%': { transform: 'translateY(-5%)' }, '50%': { transform: 'translateY(0)' } }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .mesh-bg { background-color: #0f172a; background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%); }
-        .step-active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
-        .phone-mockup { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        input:focus { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3); }
-        .btn-hover { transition: all 0.3s ease; }
-        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2); }
-        .progress-line { transition: width 0.5s ease; }
-        .toast { animation: slideInRight 0.3s ease-out; }
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Mobile Objex Brand Colors - Exact from PDF */
+        .mo-yellow { color: #F5B800; }
+        .mo-yellow-bg { background-color: #F5B800; }
+        .mo-black { background-color: #0a0a0a; }
+        .mo-dark { background-color: #1a1a1a; }
+        
+        .safety-mark {
+            background: linear-gradient(135deg, #F5B800 0%, #FFD700 100%);
+            color: #000;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 184, 0, 0.2);
+        }
+        
+        .step-active {
+            border-color: #F5B800;
+            background: rgba(245, 184, 0, 0.1);
+        }
+        
+        input:focus {
+            border-color: #F5B800;
+            box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.2);
+        }
+        
+        .btn-primary {
+            background: #F5B800;
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 184, 0, 0.3);
+        }
+        
+        .scam-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            transition: all 0.3s;
+        }
+        .scam-card:hover {
+            border-color: #F5B800;
+            transform: translateX(5px);
+        }
+        
+        .progress-line {
+            background: linear-gradient(90deg, #F5B800 var(--progress), #333 var(--progress));
+        }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-800 bg-slate-50">
+<body class="mo-black text-white min-h-screen">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel border-b border-slate-200/50 transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-50 glass-panel border-b border-yellow-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2 cursor-pointer" onclick="showSection('landing')">
-                    <div class="w-8 h-8 bg-gradient-to-br from-brand-500 to-accent-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">C</div>
-                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-accent-600">ConnectReach</span>
+                <div class="flex items-center gap-3 cursor-pointer" onclick="showView('landing')">
+                    <div class="w-10 h-10 mo-yellow-bg rounded-lg flex items-center justify-center text-black font-bold text-xl">M</div>
+                    <span class="text-2xl font-bold tracking-tight">Mobile <span class="mo-yellow">Objex</span></span>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <button onclick="showSection('landing')" class="text-slate-600 hover:text-brand-600 font-medium transition">Home</button>
-                    <button onclick="showSection('register')" class="text-slate-600 hover:text-brand-600 font-medium transition">Register</button>
-                    <button onclick="showSection('brand-dashboard')" class="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition btn-hover">Brand Portal</button>
+                <div class="hidden md:flex items-center gap-6">
+                    <button onclick="showView('landing')" class="text-gray-300 hover:text-yellow-400 transition">Home</button>
+                    <button onclick="showView('register')" class="text-gray-300 hover:text-yellow-400 transition">Protect Me</button>
+                    <button onclick="showView('brand-dashboard')" class="text-gray-300 hover:text-yellow-400 transition">For Brands</button>
+                    <button onclick="showView('scam-game')" class="px-4 py-2 mo-yellow-bg text-black rounded-lg font-semibold hover:bg-yellow-400 transition">
+                        <i class="fas fa-shield-alt mr-2"></i>Play "It's a Scam"
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Toast Notification Container -->
+    <!-- Toast Notifications -->
     <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-2"></div>
 
-    <!-- SECTION 1: Landing Page -->
-    <section id="landing" class="min-h-screen pt-16 mesh-bg flex items-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow"></div>
-            <div class="absolute top-40 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow" style="animation-delay: 1s"></div>
+    <!-- VIEW 1: Landing Page -->
+    <section id="landing" class="min-h-screen pt-16 flex items-center relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-96 h-96 bg-yellow-500/10 rounded-full filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-yellow-500/5 rounded-full filter blur-3xl animate-pulse" style="animation-delay: 1s"></div>
         </div>
-        
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="text-white space-y-8 animate-slide-up">
-                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-medium">
-                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                        Live SMS Gateway Active
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 text-sm font-medium">
+                        <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                        AI-Powered Fraud Detection Active
                     </div>
-                    <h1 class="text-5xl md:text-6xl font-bold leading-tight">
-                        Connect with Your <br/>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Customers Instantly</span>
+                    
+                    <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+                        The Future of <br/>
+                        <span class="mo-yellow">Fraud-Free</span><br/>
+                        Mobile Messaging
                     </h1>
-                    <p class="text-xl text-slate-300 max-w-lg">
-                        Seamless user registration meets powerful SMS campaign management. One platform, infinite connections.
+                    
+                    <p class="text-xl text-gray-400 max-w-lg leading-relaxed">
+                        Join 50,000+ protected users. Get the <span class="safety-mark"><i class="fas fa-check-circle"></i> MO Verified</span> safety mark on every legitimate message.
                     </p>
+
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button onclick="showSection('register')" class="px-8 py-4 bg-white text-brand-600 rounded-xl font-semibold hover:bg-slate-100 transition btn-hover flex items-center justify-center gap-2">
-                            Get Started <i class="fas fa-arrow-right"></i>
+                        <button onclick="showView('register')" class="btn-primary px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-2">
+                            Start Protecting Now <i class="fas fa-arrow-right"></i>
                         </button>
-                        <button onclick="showSection('brand-dashboard')" class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/30 rounded-xl font-semibold hover:bg-white/20 transition btn-hover">
-                            Brand Login
+                        <button onclick="showView('scam-game')" class="px-8 py-4 border border-gray-600 rounded-xl font-semibold hover:border-yellow-500 hover:text-yellow-400 transition flex items-center justify-center gap-2">
+                            <i class="fas fa-gamepad"></i> Play Safety Game
                         </button>
                     </div>
-                    <div class="flex items-center gap-6 text-sm text-slate-400 pt-4">
-                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> 99.9% Uptime</div>
-                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> Global Coverage</div>
-                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> Real-time Analytics</div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-800">
+                        <div>
+                            <div class="text-3xl font-bold mo-yellow">$7T+</div>
+                            <div class="text-sm text-gray-500">Fraud Stopped</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold mo-yellow">99.7%</div>
+                            <div class="text-sm text-gray-500">Accuracy</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold mo-yellow">50k+</div>
+                            <div class="text-sm text-gray-500">Protected Users</div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="relative animate-slide-up" style="animation-delay: 0.2s">
-                    <div class="phone-mockup bg-slate-900 rounded-[3rem] p-4 max-w-sm mx-auto border-8 border-slate-800 relative">
-                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-2xl"></div>
-                        <div class="bg-white rounded-[2rem] overflow-hidden h-[600px] relative">
-                            <!-- Phone Screen Content -->
-                            <div class="bg-brand-600 p-6 pt-12 text-white">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><i class="fas fa-user"></i></div>
-                                    <div><div class="font-semibold">Welcome!</div><div class="text-xs opacity-80">Complete your profile</div></div>
+
+                <!-- Phone Mockup -->
+                <div class="relative flex justify-center">
+                    <div class="relative w-80 bg-black rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden">
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-gray-800 rounded-b-2xl z-10"></div>
+                        
+                        <!-- Phone Screen -->
+                        <div class="h-[600px] bg-gradient-to-b from-gray-900 to-black p-6 pt-12 relative">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between mb-6">
+                                    <span class="text-gray-400 text-sm">Messages</span>
+                                    <span class="safety-mark"><i class="fas fa-shield-alt"></i> Protected</span>
+                                </div>
+
+                                <!-- Verified Message -->
+                                <div class="bg-gray-800/50 rounded-2xl p-4 border border-green-500/30 relative overflow-hidden">
+                                    <div class="absolute top-2 right-2">
+                                        <span class="safety-mark text-xs"><i class="fas fa-check"></i> MO Verified</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">A</div>
+                                        <div>
+                                            <div class="font-semibold text-sm">Amazon</div>
+                                            <div class="text-xs text-gray-500">2m ago</div>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-300">Your package #12345 has been delivered. Track: amzn.to/xyz</p>
+                                </div>
+
+                                <!-- Scam Message (Blocked) -->
+                                <div class="bg-red-900/20 rounded-2xl p-4 border border-red-500/30 relative opacity-60">
+                                    <div class="absolute top-2 right-2">
+                                        <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">BLOCKED</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center text-sm">?</div>
+                                        <div>
+                                            <div class="font-semibold text-sm text-red-400">Unknown</div>
+                                            <div class="text-xs text-gray-500">Now</div>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-400 line-through">URGENT: Your bank account is frozen. Click here now!</p>
+                                </div>
+
+                                <div class="bg-gray-800/30 rounded-2xl p-4 mt-6">
+                                    <div class="text-xs text-gray-500 mb-2">AI Analysis</div>
+                                    <div class="flex items-center gap-2 text-green-400 text-sm">
+                                        <i class="fas fa-robot"></i>
+                                        <span>Scanned 24 messages today</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-red-400 text-sm mt-1">
+                                        <i class="fas fa-ban"></i>
+                                        <span>3 scams blocked</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="p-6 space-y-4">
-                                <div class="h-10 bg-slate-100 rounded-lg animate-pulse"></div>
-                                <div class="h-10 bg-slate-100 rounded-lg animate-pulse"></div>
-                                <div class="h-10 bg-slate-100 rounded-lg animate-pulse"></div>
-                                <div class="h-32 bg-slate-100 rounded-lg animate-pulse"></div>
-                                <button class="w-full py-3 bg-brand-600 text-white rounded-lg font-medium">Continue</button>
-                            </div>
                         </div>
                     </div>
-                    <!-- Floating Elements -->
-                    <div class="absolute -top-4 -right-4 bg-green-500 text-white p-3 rounded-2xl shadow-lg animate-bounce-slight">
-                        <i class="fas fa-sms text-2xl"></i>
-                    </div>
-                    <div class="absolute -bottom-4 -left-4 bg-white p-4 rounded-2xl shadow-lg animate-bounce-slight" style="animation-delay: 1s">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600"><i class="fas fa-check"></i></div>
-                            <div><div class="text-xs text-slate-500">Campaign Sent</div><div class="font-bold text-slate-800">2.4k Users</div></div>
-                        </div>
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute -top-4 -right-4 mo-yellow-bg text-black p-4 rounded-2xl shadow-lg animate-bounce">
+                        <i class="fas fa-check-circle text-3xl"></i>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 2: User Registration Flow -->
-    <section id="register" class="min-h-screen pt-16 bg-slate-50 hidden">
-        <div class="max-w-4xl mx-auto px-4 py-12">
-            <!-- Progress Steps -->
+    <!-- VIEW 2: User Registration (4 Steps) -->
+    <section id="register" class="min-h-screen pt-16 bg-black hidden">
+        <div class="max-w-3xl mx-auto px-4 py-12">
+            
+            <!-- Progress Bar -->
             <div class="mb-12">
-                <div class="flex items-center justify-between relative">
-                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full">
-                        <div id="progress-line" class="h-full bg-brand-600 rounded-full progress-line" style="width: 0%"></div>
+                <div class="flex items-center justify-between relative mb-4">
+                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-800 rounded-full">
+                        <div id="progress-bar" class="h-full mo-yellow-bg rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                     
-                    <div class="step-circle flex flex-col items-center" data-step="1">
-                        <div class="w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">1</div>
-                        <span class="text-sm font-medium mt-2 text-brand-600">Account</span>
+                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="1">
+                        <div class="w-10 h-10 rounded-full mo-yellow-bg text-black flex items-center justify-center font-bold border-4 border-black">1</div>
+                        <span class="text-xs mt-2 text-gray-400">Account</span>
                     </div>
-                    <div class="step-circle flex flex-col items-center" data-step="2">
-                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">2</div>
-                        <span class="text-sm font-medium mt-2 text-slate-500">Profile</span>
+                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="2">
+                        <div class="w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black">2</div>
+                        <span class="text-xs mt-2 text-gray-500">Profile</span>
                     </div>
-                    <div class="step-circle flex flex-col items-center" data-step="3">
-                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">3</div>
-                        <span class="text-sm font-medium mt-2 text-slate-500">Verify</span>
+                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="3">
+                        <div class="w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black">3</div>
+                        <span class="text-xs mt-2 text-gray-500">Verify</span>
                     </div>
-                    <div class="step-circle flex flex-col items-center" data-step="4">
-                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all">4</div>
-                        <span class="text-sm font-medium mt-2 text-slate-500">Done</span>
+                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="4">
+                        <div class="w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black">4</div>
+                        <span class="text-xs mt-2 text-gray-500">Done</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Form Container -->
-            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-500 to-accent-500"></div>
+            <!-- Step 1: Account -->
+            <div id="reg-step-1" class="glass-panel rounded-2xl p-8 border border-gray-800">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Create Your <span class="mo-yellow">Shield</span></h2>
+                    <p class="text-gray-400">Join the fraud-free messaging network</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input type="email" id="reg-email" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <input type="password" id="reg-password" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="••••••••">
+                        <div class="mt-2 h-1 bg-gray-800 rounded-full overflow-hidden">
+                            <div id="password-strength" class="h-full bg-red-500 w-0 transition-all"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="nextRegStep(2)" class="w-full mt-6 btn-primary py-4 rounded-xl font-bold text-lg">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+
+                <div class="mt-6 text-center text-sm text-gray-500">
+                    Already protected? <a href="#" class="mo-yellow hover:underline">Sign in</a>
+                </div>
+            </div>
+
+            <!-- Step 2: Profile -->
+            <div id="reg-step-2" class="glass-panel rounded-2xl p-8 border border-gray-800 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Your <span class="mo-yellow">Profile</span></h2>
+                    <p class="text-gray-400">Help us personalize your protection</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">First Name</label>
+                        <input type="text" id="reg-firstname" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="John">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
+                        <input type="text" id="reg-lastname" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="Doe">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number <span class="text-xs text-gray-500">(For SMS protection)</span></label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">+1</span>
+                        <input type="tel" id="reg-phone" class="w-full pl-12 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="(555) 000-0000">
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Company (Optional)</label>
+                    <input type="text" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="Acme Inc.">
+                </div>
+
+                <div class="flex gap-4">
+                    <button onclick="prevRegStep(1)" class="flex-1 py-4 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 transition">Back</button>
+                    <button onclick="nextRegStep(3)" class="flex-1 btn-primary py-4 rounded-xl font-bold">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 3: OTP Verification -->
+            <div id="reg-step-3" class="glass-panel rounded-2xl p-8 border border-gray-800 hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                        <i class="fas fa-mobile-alt mo-yellow text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-2">Verify Phone</h2>
+                    <p class="text-gray-400">Enter code sent to <span id="verify-phone-display" class="mo-yellow"></span></p>
+                </div>
+
+                <div class="flex justify-center gap-3 mb-6">
+                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" data-index="0">
+                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" data-index="1">
+                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" data-index="2">
+                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" data-index="3">
+                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" data-index="4">
+                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" data-index="5">
+                </div>
+
+                <p class="text-center text-sm text-gray-500 mb-6">
+                    Didn't receive it? <button class="mo-yellow hover:underline">Resend (30s)</button>
+                </p>
+
+                <div class="flex gap-4">
+                    <button onclick="prevRegStep(2)" class="flex-1 py-4 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 transition">Back</button>
+                    <button onclick="verifyOTP()" class="flex-1 btn-primary py-4 rounded-xl font-bold">Verify</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Success -->
+            <div id="reg-step-4" class="glass-panel rounded-2xl p-8 border border-gray-800 hidden text-center">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center animate-bounce">
+                    <i class="fas fa-check text-green-400 text-3xl"></i>
+                </div>
                 
-                <!-- Step 1: Account Details -->
-                <div id="step-1" class="step-content space-y-6 animate-fade-in">
-                    <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Create Account</h2>
-                        <p class="text-slate-500">Start your journey with ConnectReach</p>
+                <h2 class="text-3xl font-bold mb-4">You're <span class="mo-yellow">Protected!</span></h2>
+                <p class="text-gray-400 mb-6">Your number is now monitored for fraud 24/7</p>
+
+                <div class="bg-gray-900 rounded-xl p-6 mb-6 text-left border border-gray-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i class="fas fa-check-circle text-green-400"></i>
+                        <span class="text-sm">SMS protection active</span>
                     </div>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                            <div class="relative">
-                                <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                                <input type="email" id="reg-email" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200 transition-all" placeholder="you@example.com">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
-                            <div class="relative">
-                                <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                                <input type="password" id="reg-password" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200 transition-all" placeholder="••••••••">
-                            </div>
-                            <div class="mt-2 flex gap-1">
-                                <div class="h-1 flex-1 bg-slate-200 rounded-full overflow-hidden"><div id="strength-bar" class="h-full bg-red-500 w-0 transition-all duration-300"></div></div>
-                            </div>
-                        </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <i class="fas fa-check-circle text-green-400"></i>
+                        <span class="text-sm">Email monitoring enabled</span>
                     </div>
-                    
-                    <button onclick="nextStep(2)" class="w-full py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover mt-6">
-                        Continue <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    
-                    <div class="relative my-6">
-                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-                        <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-slate-500">Or continue with</span></div>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <button class="flex items-center justify-center gap-2 py-3 border border-slate-300 rounded-xl hover:bg-slate-50 transition btn-hover">
-                            <i class="fab fa-google text-red-500"></i> Google
-                        </button>
-                        <button class="flex items-center justify-center gap-2 py-3 border border-slate-300 rounded-xl hover:bg-slate-50 transition btn-hover">
-                            <i class="fab fa-apple text-slate-800"></i> Apple
-                        </button>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-400"></i>
+                        <span class="text-sm">MO Safety Mark activated</span>
                     </div>
                 </div>
 
-                <!-- Step 2: Profile -->
-                <div id="step-2" class="step-content space-y-6 hidden animate-fade-in">
-                    <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Complete Profile</h2>
-                        <p class="text-slate-500">Tell us a bit about yourself</p>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">First Name</label>
-                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="John">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Last Name</label>
-                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="Doe">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 font-medium">+1</span>
-                            <input type="tel" id="phone-number" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="(555) 000-0000">
-                        </div>
-                        <p class="text-xs text-slate-500 mt-1">Required for SMS campaign reception</p>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Company (Optional)</label>
-                        <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="Acme Inc.">
-                    </div>
-                    
-                    <div class="flex gap-4 mt-6">
-                        <button onclick="prevStep(1)" class="flex-1 py-4 border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition">Back</button>
-                        <button onclick="nextStep(3)" class="flex-1 py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover">Continue</button>
-                    </div>
-                </div>
-
-                <!-- Step 3: Verification -->
-                <div id="step-3" class="step-content space-y-6 hidden animate-fade-in">
-                    <div class="text-center mb-8">
-                        <div class="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-600 text-2xl">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Verify Phone</h2>
-                        <p class="text-slate-500">Enter the 6-digit code sent to your phone</p>
-                    </div>
-                    
-                    <div class="flex justify-center gap-3 mb-6">
-                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="0">
-                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="1">
-                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="2">
-                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="3">
-                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="4">
-                        <input type="text" maxlength="1" class="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-300 rounded-xl focus:border-brand-500 focus:outline-none transition-all otp-input" data-index="5">
-                    </div>
-                    
-                    <div class="text-center text-sm text-slate-500 mb-6">
-                        Didn't receive code? <button class="text-brand-600 font-medium hover:underline">Resend (30s)</button>
-                    </div>
-                    
-                    <div class="flex gap-4">
-                        <button onclick="prevStep(2)" class="flex-1 py-4 border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition">Back</button>
-                        <button onclick="nextStep(4)" class="flex-1 py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover">Verify</button>
-                    </div>
-                </div>
-
-                <!-- Step 4: Success -->
-                <div id="step-4" class="step-content text-center hidden animate-fade-in">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600 text-3xl animate-bounce">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-800 mb-3">Welcome Aboard!</h2>
-                    <p class="text-slate-500 mb-8 max-w-md mx-auto">Your account is ready. You'll receive confirmation via SMS shortly.</p>
-                    
-                    <div class="bg-slate-50 rounded-xl p-6 mb-8 text-left max-w-md mx-auto border border-slate-200">
-                        <div class="flex items-center gap-3 mb-3">
-                            <i class="fas fa-envelope text-brand-600"></i>
-                            <span class="text-sm text-slate-600">Confirmation email sent</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-sms text-brand-600"></i>
-                            <span class="text-sm text-slate-600">SMS verification completed</span>
-                        </div>
-                    </div>
-                    
-                    <button onclick="showSection('brand-dashboard')" class="px-8 py-4 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition btn-hover">
-                        Go to Dashboard <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
+                <button onclick="showView('landing')" class="btn-primary px-8 py-4 rounded-xl font-bold">
+                    Go to Dashboard
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: Brand Dashboard -->
-    <section id="brand-dashboard" class="min-h-screen pt-16 bg-slate-50 hidden">
+    <!-- VIEW 3: Brand Dashboard -->
+    <section id="brand-dashboard" class="min-h-screen pt-16 bg-black hidden">
         <div class="flex h-screen pt-16 -mt-16">
             <!-- Sidebar -->
-            <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col">
-                <div class="p-6 border-b border-slate-100">
+            <aside class="w-64 bg-gray-900 border-r border-gray-800 hidden md:flex flex-col">
+                <div class="p-6 border-b border-gray-800">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-white font-bold">B</div>
+                        <div class="w-10 h-10 mo-yellow-bg rounded-full flex items-center justify-center text-black font-bold">B</div>
                         <div>
-                            <div class="font-semibold text-slate-800">Brand Admin</div>
-                            <div class="text-xs text-slate-500">Pro Plan</div>
+                            <div class="font-semibold">Nike Inc.</div>
+                            <div class="text-xs text-gray-500">Enterprise</div>
                         </div>
                     </div>
                 </div>
                 
-                <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-                    <button onclick="switchTab('campaigns')" class="w-full flex items-center gap-3 px-4 py-3 text-brand-600 bg-brand-50 rounded-lg font-medium transition tab-btn" data-tab="campaigns">
+                <nav class="flex-1 p-4 space-y-1">
+                    <button class="w-full flex items-center gap-3 px-4 py-3 mo-yellow-bg text-black rounded-lg font-semibold">
                         <i class="fas fa-bullhorn w-5"></i> Campaigns
                     </button>
-                    <button onclick="switchTab('audience')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition tab-btn" data-tab="audience">
+                    <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition">
                         <i class="fas fa-users w-5"></i> Audience
                     </button>
-                    <button onclick="switchTab('analytics')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition tab-btn" data-tab="analytics">
+                    <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition">
                         <i class="fas fa-chart-line w-5"></i> Analytics
                     </button>
-                    <button onclick="switchTab('settings')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition tab-btn" data-tab="settings">
-                        <i class="fas fa-cog w-5"></i> Settings
+                    <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition">
+                        <i class="fas fa-shield-alt w-5"></i> Safety Center
                     </button>
                 </nav>
-                
-                <div class="p-4 border-t border-slate-100">
-                    <div class="bg-gradient-to-r from-brand-500 to-accent-500 rounded-xl p-4 text-white">
-                        <div class="text-sm font-medium mb-1">SMS Credits</div>
+
+                <div class="p-4 border-t border-gray-800">
+                    <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 rounded-xl p-4 text-black">
+                        <div class="text-sm font-semibold mb-1">SMS Credits</div>
                         <div class="text-2xl font-bold mb-2">24,500</div>
-                        <div class="w-full bg-white/20 rounded-full h-2 mb-2">
-                            <div class="bg-white rounded-full h-2" style="width: 75%"></div>
+                        <div class="w-full bg-black/20 rounded-full h-2">
+                            <div class="bg-black rounded-full h-2" style="width: 75%"></div>
                         </div>
-                        <button class="text-xs text-white/90 hover:text-white underline">Buy More</button>
                     </div>
                 </div>
             </aside>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto bg-slate-50 p-4 md:p-8">
-                <!-- Header -->
+            <main class="flex-1 overflow-y-auto p-8">
                 <div class="flex justify-between items-center mb-8">
                     <div>
-                        <h1 class="text-2xl font-bold text-slate-800">SMS Campaigns</h1>
-                        <p class="text-slate-500 text-sm mt-1">Create and manage your messaging campaigns</p>
+                        <h1 class="text-3xl font-bold">Campaigns <span class="safety-mark text-sm ml-2"><i class="fas fa-check"></i> MO Verified</span></h1>
+                        <p class="text-gray-400 mt-1">Create verified SMS campaigns with fraud protection</p>
                     </div>
-                    <button onclick="openCampaignModal()" class="px-6 py-3 bg-brand-600 text-white rounded-xl font-medium hover:bg-brand-700 transition btn-hover flex items-center gap-2">
+                    <button onclick="openCampaignModal()" class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
                         <i class="fas fa-plus"></i> New Campaign
                     </button>
                 </div>
 
-                <!-- Stats Cards -->
+                <!-- Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="glass-panel p-6 rounded-xl border border-gray-800">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600"><i class="fas fa-paper-plane text-xl"></i></div>
-                            <span class="text-green-600 text-sm font-medium flex items-center gap-1"><i class="fas fa-arrow-up"></i> 12%</span>
+                            <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mo-yellow">
+                                <i class="fas fa-paper-plane text-xl"></i>
+                            </div>
+                            <span class="text-green-400 text-sm"><i class="fas fa-arrow-up"></i> 12%</span>
                         </div>
-                        <div class="text-3xl font-bold text-slate-800 mb-1">48.2k</div>
-                        <div class="text-sm text-slate-500">Messages Sent</div>
+                        <div class="text-3xl font-bold">48.2k</div>
+                        <div class="text-sm text-gray-500">Messages Sent</div>
                     </div>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+
+                    <div class="glass-panel p-6 rounded-xl border border-gray-800">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600"><i class="fas fa-check-double text-xl"></i></div>
-                            <span class="text-green-600 text-sm font-medium flex items-center gap-1"><i class="fas fa-arrow-up"></i> 8%</span>
+                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400">
+                                <i class="fas fa-check-double text-xl"></i>
+                            </div>
+                            <span class="text-green-400 text-sm"><i class="fas fa-arrow-up"></i> 8%</span>
                         </div>
-                        <div class="text-3xl font-bold text-slate-800 mb-1">94.3%</div>
-                        <div class="text-sm text-slate-500">Delivery Rate</div>
+                        <div class="text-3xl font-bold">99.7%</div>
+                        <div class="text-sm text-gray-500">Delivery Rate</div>
                     </div>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+
+                    <div class="glass-panel p-6 rounded-xl border border-gray-800">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600"><i class="fas fa-reply text-xl"></i></div>
-                            <span class="text-green-600 text-sm font-medium flex items-center gap-1"><i class="fas fa-arrow-up"></i> 24%</span>
+                            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400">
+                                <i class="fas fa-reply text-xl"></i>
+                            </div>
+                            <span class="text-green-400 text-sm"><i class="fas fa-arrow-up"></i> 24%</span>
                         </div>
-                        <div class="text-3xl font-bold text-slate-800 mb-1">32.8%</div>
-                        <div class="text-sm text-slate-500">Response Rate</div>
+                        <div class="text-3xl font-bold">32.8%</div>
+                        <div class="text-sm text-gray-500">Response Rate</div>
                     </div>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+
+                    <div class="glass-panel p-6 rounded-xl border border-gray-800">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600"><i class="fas fa-users text-xl"></i></div>
-                            <span class="text-slate-500 text-sm font-medium">Active</span>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400">
+                                <i class="fas fa-ban text-xl"></i>
+                            </div>
+                            <span class="text-red-400 text-sm font-bold">Blocked</span>
                         </div>
-                        <div class="text-3xl font-bold text-slate-800 mb-1">12.5k</div>
-                        <div class="text-sm text-slate-500">Subscribers</div>
+                        <div class="text-3xl font-bold">1,240</div>
+                        <div class="text-sm text-gray-500">Fraud Attempts</div>
                     </div>
                 </div>
 
-                <!-- Campaign List -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                        <h3 class="font-semibold text-slate-800">Recent Campaigns</h3>
+                <!-- Campaigns Table -->
+                <div class="glass-panel rounded-xl border border-gray-800 overflow-hidden">
+                    <div class="p-6 border-b border-gray-800 flex justify-between items-center">
+                        <h3 class="font-semibold text-lg">Recent Campaigns</h3>
                         <div class="flex gap-2">
-                            <button class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg hover:bg-slate-50 transition"><i class="fas fa-filter mr-2"></i>Filter</button>
-                            <button class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg hover:bg-slate-50 transition"><i class="fas fa-download mr-2"></i>Export</button>
+                            <button class="px-4 py-2 border border-gray-700 rounded-lg hover:border-yellow-500 transition text-sm">
+                                <i class="fas fa-filter mr-2"></i>Filter
+                            </button>
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-50 text-slate-600 text-sm">
-                                <tr>
-                                    <th class="px-6 py-4 font-medium">Campaign</th>
-                                    <th class="px-6 py-4 font-medium">Status</th>
-                                    <th class="px-6 py-4 font-medium">Recipients</th>
-                                    <th class="px-6 py-4 font-medium">Sent</th>
-                                    <th class="px-6 py-4 font-medium">Open Rate</th>
-                                    <th class="px-6 py-4 font-medium">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100" id="campaign-list">
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="px-6 py-4">
-                                        <div class="font-medium text-slate-800">Summer Sale 2024</div>
-                                        <div class="text-sm text-slate-500">Promotional • 2 hours ago</div>
-                                    </td>
-                                    <td class="px-6 py-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Completed</span></td>
-                                    <td class="px-6 py-4 text-slate-600">12,450</td>
-                                    <td class="px-6 py-4 text-slate-600">11,892</td>
-                                    <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-16 bg-slate-200 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 68%"></div></div><span class="text-sm text-slate-600">68%</span></div></td>
-                                    <td class="px-6 py-4"><button class="text-slate-400 hover:text-brand-600 transition"><i class="fas fa-ellipsis-v"></i></button></td>
-                                </tr>
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="px-6 py-4">
-                                        <div class="font-medium text-slate-800">Welcome Series</div>
-                                        <div class="text-sm text-slate-500">Automated • Active</div>
-                                    </td>
-                                    <td class="px-6 py-4"><span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Running</span></td>
-                                    <td class="px-6 py-4 text-slate-600">8,230</td>
-                                    <td class="px-6 py-4 text-slate-600">8,230</td>
-                                    <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-16 bg-slate-200 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 82%"></div></div><span class="text-sm text-slate-600">82%</span></div></td>
-                                    <td class="px-6 py-4"><button class="text-slate-400 hover:text-brand-600 transition"><i class="fas fa-ellipsis-v"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-900/50 text-gray-400 text-sm">
+                            <tr>
+                                <th class="px-6 py-4 font-medium">Campaign</th>
+                                <th class="px-6 py-4 font-medium">Status</th>
+                                <th class="px-6 py-4 font-medium">Recipients</th>
+                                <th class="px-6 py-4 font-medium">Safety Score</th>
+                                <th class="px-6 py-4 font-medium">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800" id="campaigns-table">
+                            <tr class="hover:bg-gray-900/30 transition">
+                                <td class="px-6 py-4">
+                                    <div class="font-semibold">Summer Sale 2024</div>
+                                    <div class="text-sm text-gray-500">Promotional • 2h ago</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">Completed</span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300">12,450</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-16 bg-gray-700 rounded-full h-2">
+                                            <div class="bg-green-400 h-2 rounded-full" style="width: 98%"></div>
+                                        </div>
+                                        <span class="text-sm text-green-400">98%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="text-gray-400 hover:mo-yellow transition"><i class="fas fa-ellipsis-v"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>
     </section>
 
-    <!-- New Campaign Modal -->
-    <div id="campaign-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-slide-up">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white">
-                <h3 class="text-xl font-bold text-slate-800">Create SMS Campaign</h3>
-                <button onclick="closeCampaignModal()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center transition"><i class="fas fa-times text-slate-500"></i></button>
+    <!-- VIEW 4: "It's a Scam" Game -->
+    <section id="scam-game" class="min-h-screen pt-16 bg-black hidden">
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4">"It's a <span class="mo-yellow">Scam</span>"</h1>
+                <p class="text-gray-400 text-lg">Test your fraud detection skills. Can you spot the scam?</p>
             </div>
-            
+
+            <div class="glass-panel rounded-2xl p-8 border border-gray-800 mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm text-gray-400">Question <span id="q-current">1</span> of 5</div>
+                    <div class="text-sm mo-yellow font-bold">Score: <span id="score">0</span></div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="text-lg mb-4 font-semibold">Which message is the SCAM?</div>
+                    
+                    <div class="space-y-4" id="game-options">
+                        <button onclick="checkAnswer(0)" class="w-full scam-card p-4 rounded-xl text-left hover:bg-gray-800 transition group">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">A</div>
+                                <div>
+                                    <div class="font-semibold mb-1">Amazon Delivery</div>
+                                    <p class="text-sm text-gray-400">Your Amazon package #12345 has been delivered. Track at amazon.com/gp/... Reply HELP for support.</p>
+                                    <div class="mt-2">
+                                        <span class="safety-mark text-xs opacity-0 group-hover:opacity-100 transition"><i class="fas fa-check"></i> Real</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+
+                        <button onclick="checkAnswer(1)" class="w-full scam-card p-4 rounded-xl text-left hover:bg-gray-800 transition group">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">B</div>
+                                <div>
+                                    <div class="font-semibold mb-1">URGENT: Bank Alert</div>
+                                    <p class="text-sm text-gray-400">Your account has been FROZEN due to suspicious activity. Click here immediately to verify: bit.ly/xyz123</p>
+                                    <div class="mt-2">
+                                        <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition">SCAM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="game-feedback" class="hidden p-4 rounded-xl mb-4"></div>
+                
+                <button onclick="nextQuestion()" id="next-btn" class="hidden w-full btn-primary py-3 rounded-xl font-bold">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-panel rounded-xl p-6 border border-gray-800">
+                    <h3 class="font-bold mb-4 mo-yellow"><i class="fas fa-trophy mr-2"></i>Top Detectives</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-900 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 mo-yellow-bg rounded-full flex items-center justify-center text-black font-bold text-sm">1</div>
+                                <span>Sarah M.</span>
+                            </div>
+                            <span class="font-bold">2,450 pts</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-sm">2</div>
+                                <span>James K.</span>
+                            </div>
+                            <span class="font-bold">2,120 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 border border-gray-800">
+                    <h3 class="font-bold mb-4 mo-yellow"><i class="fas fa-graduation-cap mr-2"></i>Learn</h3>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <p>Real banks never ask for passwords via SMS</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <p>Check sender IDs carefully - "Amaz0n" is not "Amazon"</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <p>Shortened links (bit.ly) are often suspicious</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Campaign Modal -->
+    <div id="campaign-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-2xl rounded-2xl border border-gray-800 max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center sticky top-0 bg-gray-900/95 backdrop-blur">
+                <h3 class="text-xl font-bold">Create Verified Campaign</h3>
+                <button onclick="closeCampaignModal()" class="w-8 h-8 rounded-full hover:bg-gray-800 flex items-center justify-center transition">
+                    <i class="fas fa-times text-gray-400"></i>
+                </button>
+            </div>
+
             <div class="p-6 space-y-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Campaign Name</label>
-                    <input type="text" id="campaign-name" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all" placeholder="e.g., Flash Sale Friday">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Campaign Name</label>
+                    <input type="text" id="camp-name" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition" placeholder="Summer Sale 2024">
                 </div>
-                
+
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Audience Segment</label>
-                        <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all bg-white">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Audience</label>
+                        <select class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none">
                             <option>All Subscribers (12.5k)</option>
                             <option>VIP Customers (2.3k)</option>
                             <option>New Users (5.1k)</option>
-                            <option>Inactive (1.8k)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Schedule</label>
-                        <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all bg-white">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Send Time</label>
+                        <select class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none">
                             <option>Send Immediately</option>
                             <option>Schedule for Later</option>
                         </select>
                     </div>
                 </div>
-                
+
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Message Content</label>
-                    <div class="relative">
-                        <textarea id="campaign-message" rows="4" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-500 transition-all resize-none" maxlength="160" placeholder="Type your message here..."></textarea>
-                        <div class="absolute bottom-3 right-3 text-xs text-slate-400"><span id="char-count">0</span>/160 chars</div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                    <textarea id="camp-message" rows="4" maxlength="160" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition resize-none" placeholder="Hi {name}, your exclusive 20% off code is SUMMER20..."></textarea>
+                    <div class="flex justify-between mt-2 text-xs text-gray-500">
+                        <span>Use {'{name}'} for personalization</span>
+                        <span id="char-count">0/160</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">Tip: Personalize with {'{name}'} or {'{company}'}</p>
                 </div>
-                
-                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                    <div class="text-sm font-medium text-slate-700 mb-2">Preview</div>
-                    <div class="bg-white rounded-lg p-4 shadow-sm border border-slate-200 max-w-sm">
-                        <div class="flex items-center gap-2 mb-2 text-xs text-slate-500">
-                            <i class="fas fa-sms"></i> SMS Preview
+
+                <div class="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                    <div class="flex items-center gap-2 mb-3 text-sm text-gray-400">
+                        <i class="fas fa-mobile-alt"></i> Preview with Safety Mark
+                    </div>
+                    <div class="bg-black rounded-lg p-4 border border-gray-800 relative">
+                        <div class="absolute top-2 right-2">
+                            <span class="safety-mark text-xs"><i class="fas fa-shield-alt"></i> MO Verified</span>
                         </div>
-                        <p class="text-slate-800 text-sm" id="message-preview">Your message will appear here...</p>
+                        <p class="text-sm text-gray-300 mt-4" id="preview-text">Your message will appear here...</p>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 flex items-start gap-3">
+                    <i class="fas fa-info-circle mo-yellow mt-1"></i>
+                    <div class="text-sm text-gray-300">
+                        <span class="font-semibold mo-yellow">Fraud Check:</span> This message will be scanned by our AI for compliance with safety standards before delivery.
                     </div>
                 </div>
             </div>
-            
-            <div class="p-6 border-t border-slate-100 flex justify-end gap-3 sticky bottom-0 bg-white">
-                <button onclick="closeCampaignModal()" class="px-6 py-3 border border-slate-300 rounded-xl font-medium text-slate-700 hover:bg-slate-50 transition">Cancel</button>
-                <button onclick="sendCampaign()" class="px-6 py-3 bg-brand-600 text-white rounded-xl font-medium hover:bg-brand-700 transition btn-hover flex items-center gap-2">
-                    <i class="fas fa-paper-plane"></i> Send Campaign
+
+            <div class="p-6 border-t border-gray-800 flex justify-end gap-3 sticky bottom-0 bg-gray-900/95 backdrop-blur">
+                <button onclick="closeCampaignModal()" class="px-6 py-3 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 transition">Cancel</button>
+                <button onclick="createCampaign()" class="btn-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Send with Verification
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Navigation
-        function showSection(sectionId) {
+        // View Management
+        function showView(viewId) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
@@ -533,64 +704,74 @@
 
         function updateProgress() {
             const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            document.getElementById('progress-line').style.width = progress + '%';
+            document.getElementById('progress-bar').style.width = progress + '%';
             
-            document.querySelectorAll('.step-circle').forEach((circle, index) => {
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
                 const stepNum = index + 1;
-                const num = circle.querySelector('div');
-                const label = circle.querySelector('span');
+                const circle = indicator.querySelector('div');
+                const label = indicator.querySelector('span');
                 
                 if (stepNum < currentStep) {
-                    num.className = 'w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all';
-                    num.innerHTML = '<i class="fas fa-check"></i>';
-                    label.className = 'text-sm font-medium mt-2 text-green-600';
+                    circle.className = 'w-10 h-10 rounded-full bg-green-500 text-black flex items-center justify-center font-bold border-4 border-black';
+                    circle.innerHTML = '<i class="fas fa-check"></i>';
+                    label.className = 'text-xs mt-2 text-green-400';
                 } else if (stepNum === currentStep) {
-                    num.className = 'w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all';
-                    num.innerHTML = stepNum;
-                    label.className = 'text-sm font-medium mt-2 text-brand-600';
+                    circle.className = 'w-10 h-10 rounded-full mo-yellow-bg text-black flex items-center justify-center font-bold border-4 border-black';
+                    circle.innerHTML = stepNum;
+                    label.className = 'text-xs mt-2 mo-yellow';
                 } else {
-                    num.className = 'w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold border-4 border-white shadow-md transition-all';
-                    num.innerHTML = stepNum;
-                    label.className = 'text-sm font-medium mt-2 text-slate-500';
+                    circle.className = 'w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black';
+                    circle.innerHTML = stepNum;
+                    label.className = 'text-xs mt-2 text-gray-500';
                 }
             });
         }
 
-        function nextStep(step) {
-            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+        function nextRegStep(step) {
+            document.getElementById(`reg-step-${currentStep}`).classList.add('hidden');
             currentStep = step;
-            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            document.getElementById(`reg-step-${currentStep}`).classList.remove('hidden');
             updateProgress();
             
-            if (step === 3) initOTP();
+            if (step === 3) {
+                const phone = document.getElementById('reg-phone').value;
+                document.getElementById('verify-phone-display').textContent = phone;
+                initOTP();
+            }
         }
 
-        function prevStep(step) {
-            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+        function prevRegStep(step) {
+            document.getElementById(`reg-step-${currentStep}`).classList.add('hidden');
             currentStep = step;
-            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            document.getElementById(`reg-step-${currentStep}`).classList.remove('hidden');
             updateProgress();
         }
 
-        // OTP Input Handling
+        // OTP Handling
         function initOTP() {
             const inputs = document.querySelectorAll('.otp-input');
             inputs.forEach((input, index) => {
                 input.addEventListener('keyup', (e) => {
-                    if (e.key >= 0 && e.key <= 9) {
+                    if (e.key >= '0' && e.key <= '9') {
                         if (index < inputs.length - 1) inputs[index + 1].focus();
                     } else if (e.key === 'Backspace' && index > 0) {
                         inputs[index - 1].focus();
                     }
                 });
             });
-            if (inputs.length > 0) inputs[0].focus();
+            inputs[0].focus();
+        }
+
+        function verifyOTP() {
+            // Demo: any code works
+            nextRegStep(4);
+            showToast('Phone verified successfully!', 'success');
         }
 
         // Password Strength
         document.getElementById('reg-password')?.addEventListener('input', function(e) {
             const val = e.target.value;
-            const bar = document.getElementById('strength-bar');
+            const bar = document.getElementById('password-strength');
             let strength = 0;
             if (val.length > 5) strength += 25;
             if (val.length > 8) strength += 25;
@@ -598,7 +779,7 @@
             if (/[0-9]/.test(val)) strength += 25;
             
             bar.style.width = strength + '%';
-            bar.className = 'h-full transition-all duration-300 ' + 
+            bar.className = 'h-full transition-all ' + 
                 (strength < 50 ? 'bg-red-500' : strength < 75 ? 'bg-yellow-500' : 'bg-green-500');
         });
 
@@ -611,52 +792,77 @@
             document.getElementById('campaign-modal').classList.add('hidden');
         }
 
-        // Message Character Count & Preview
-        document.getElementById('campaign-message')?.addEventListener('input', function(e) {
-            const count = e.target.value.length;
-            document.getElementById('char-count').textContent = count;
-            document.getElementById('message-preview').textContent = e.target.value || 'Your message will appear here...';
+        document.getElementById('camp-message')?.addEventListener('input', function(e) {
+            document.getElementById('char-count').textContent = e.target.value.length + '/160';
+            document.getElementById('preview-text').textContent = e.target.value || 'Your message will appear here...';
         });
 
-        function sendCampaign() {
-            const name = document.getElementById('campaign-name').value;
+        async function createCampaign() {
+            const name = document.getElementById('camp-name').value;
             if (!name) {
                 showToast('Please enter a campaign name', 'error');
                 return;
             }
-            
-            closeCampaignModal();
-            showToast(`Campaign "${name}" is being sent!`, 'success');
-            
-            // Add to table (simulation)
-            setTimeout(() => {
-                const tbody = document.getElementById('campaign-list');
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-slate-50 transition animate-fade-in';
-                row.innerHTML = `
-                    <td class="px-6 py-4">
-                        <div class="font-medium text-slate-800">${name}</div>
-                        <div class="text-sm text-slate-500">Promotional • Just now</div>
-                    </td>
-                    <td class="px-6 py-4"><span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Sending</span></td>
-                    <td class="px-6 py-4 text-slate-600">12,500</td>
-                    <td class="px-6 py-4 text-slate-600">--</td>
-                    <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-16 bg-slate-200 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 0%"></div></div><span class="text-sm text-slate-600">--</span></div></td>
-                    <td class="px-6 py-4"><button class="text-slate-400 hover:text-brand-600 transition"><i class="fas fa-ellipsis-v"></i></button></td>
-                `;
-                tbody.insertBefore(row, tbody.firstChild);
-            }, 500);
+
+            try {
+                const response = await fetch('/api/campaigns', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name: name})
+                });
+                const data = await response.json();
+                
+                closeCampaignModal();
+                showToast(data.message, 'success');
+            } catch (e) {
+                // Demo mode: simulate success
+                closeCampaignModal();
+                showToast('Campaign created with MO Safety Mark!', 'success');
+            }
         }
 
-        // Toast Notifications
+        // Game Logic
+        let score = 0;
+        let currentQ = 1;
+
+        function checkAnswer(isScam) {
+            const feedback = document.getElementById('game-feedback');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (isScam === 1) { // B is the scam
+                score += 100;
+                feedback.className = 'p-4 rounded-xl mb-4 bg-green-500/20 border border-green-500 text-green-400';
+                feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Correct! That was a scam. Notice the urgency and suspicious link.';
+            } else {
+                feedback.className = 'p-4 rounded-xl mb-4 bg-red-500/20 border border-red-500 text-red-400';
+                feedback.innerHTML = '<i class="fas fa-times-circle mr-2"></i> Not quite! Look for urgency and suspicious links.';
+            }
+            
+            feedback.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+            document.getElementById('score').textContent = score;
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ > 5) {
+                showToast('Game completed! Score: ' + score, 'success');
+                currentQ = 1;
+                score = 0;
+            }
+            document.getElementById('q-current').textContent = currentQ;
+            document.getElementById('game-feedback').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        // Toast System
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const colors = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
             
-            toast.className = `toast ${colors} text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 min-w-[300px]`;
-            toast.innerHTML = `<i class="fas ${icon}"></i><span class="font-medium">${message}</span>`;
+            toast.className = `${bg} text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 min-w-[300px] animate-bounce`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check' : 'fa-exclamation'}-circle"></i><span class="font-bold">${message}</span>`;
             
             container.appendChild(toast);
             setTimeout(() => {
@@ -665,24 +871,6 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-
-        // Tab Switching
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                if (btn.dataset.tab === tabName) {
-                    btn.classList.add('bg-brand-50', 'text-brand-600');
-                    btn.classList.remove('text-slate-600', 'hover:bg-slate-50');
-                } else {
-                    btn.classList.remove('bg-brand-50', 'text-brand-600');
-                    btn.classList.add('text-slate-600', 'hover:bg-slate-50');
-                }
-            });
-        }
-
-        // Close modal on outside click
-        document.getElementById('campaign-modal')?.addEventListener('click', function(e) {
-            if (e.target === this) closeCampaignModal();
-        });
 
         // Initialize
         updateProgress();
