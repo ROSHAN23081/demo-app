@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Dashboard - Mobile Objex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mo-yellow { color: #F5B800; }
+        .mo-yellow-bg { background-color: #F5B800; }
+        .mo-black { background-color: #0a0a0a; }
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 184, 0, 0.2);
+        }
+        .safety-mark {
+            background: linear-gradient(135deg, #F5B800 0%, #FFD700 100%);
+            color: #000;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: #F5B800;
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 184, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="mo-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-yellow-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 mo-yellow-bg rounded-lg flex items-center justify-center text-black font-bold text-xl">M</div>
+                    <span class="text-2xl font-bold tracking-tight">Mobile <span class="mo-yellow">Objex</span></span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-300 hover:text-yellow-400 transition">Home</a>
+                    <a href="register.html" class="text-gray-300 hover:text-yellow-400 transition">Protect Me</a>
+                    <a href="brand-dashboard.html" class="text-gray-300 hover:text-yellow-400 transition">For Brands</a>
+                    <a href="scam-game.html" class="px-4 py-2 mo-yellow-bg text-black rounded-lg font-semibold hover:bg-yellow-400 transition">
+                        <i class="fas fa-shield-alt mr-2"></i>Play "It's a Scam"
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="min-h-screen pt-16 bg-black">
+        <div class="flex h-screen pt-16 -mt-16">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-gray-900 border-r border-gray-800 hidden md:flex flex-col">
+                <div class="p-6 border-b border-gray-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 mo-yellow-bg rounded-full flex items-center justify-center text-black font-bold">B</div>
+                        <div>
+                            <div class="font-semibold">Nike Inc.</div>
+                            <div class="text-xs text-gray-500">Enterprise</div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex-1 p-4 space-y-1">
+                    <a href="#" class="w-full flex items-center gap-3 px-4 py-3 mo-yellow-bg text-black rounded-lg font-semibold"><i class="fas fa-bullhorn w-5"></i> Campaigns</a>
+                    <a href="#" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition"><i class="fas fa-users w-5"></i> Audience</a>
+                    <a href="#" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+                </nav>
+                <div class="p-4 border-t border-gray-800">
+                    <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 rounded-xl p-4 text-black">
+                        <div class="text-sm font-semibold mb-1">SMS Credits</div>
+                        <div class="text-2xl font-bold">24,500</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto p-4 md:p-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Campaigns <span class="safety-mark text-sm ml-2"><i class="fas fa-check"></i> MO Verified</span></h1>
+                        <p class="text-gray-400 mt-1 text-sm">Create verified SMS campaigns with fraud protection</p>
+                    </div>
+                    <button onclick="alert('Campaign creation demo')" class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
+                        <i class="fas fa-plus"></i> New Campaign
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mo-yellow text-sm md:text-xl"><i class="fas fa-paper-plane"></i></div>
+                            <span class="text-green-400 text-xs md:text-sm"><i class="fas fa-arrow-up"></i> 12%</span>
+                        </div>
+                        <div class="text-xl md:text-3xl font-bold">48.2k</div>
+                        <div class="text-xs md:text-sm text-gray-500">Messages Sent</div>
+                    </div>
+                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-sm md:text-xl"><i class="fas fa-check-double"></i></div>
+                            <span class="text-green-400 text-xs md:text-sm"><i class="fas fa-arrow-up"></i> 8%</span>
+                        </div>
+                        <div class="text-xl md:text-3xl font-bold">99.7%</div>
+                        <div class="text-xs md:text-sm text-gray-500">Delivery Rate</div>
+                    </div>
+                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 text-sm md:text-xl"><i class="fas fa-reply"></i></div>
+                            <span class="text-green-400 text-xs md:text-sm"><i class="fas fa-arrow-up"></i> 24%</span>
+                        </div>
+                        <div class="text-xl md:text-3xl font-bold">32.8%</div>
+                        <div class="text-xs md:text-sm text-gray-500">Response Rate</div>
+                    </div>
+                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 text-sm md:text-xl"><i class="fas fa-ban"></i></div>
+                            <span class="text-red-400 text-xs md:text-sm font-bold">Blocked</span>
+                        </div>
+                        <div class="text-xl md:text-3xl font-bold">1,240</div>
+                        <div class="text-xs md:text-sm text-gray-500">Fraud Attempts</div>
+                    </div>
+                </div>
+
+                <!-- Campaigns Table -->
+                <div class="glass-panel rounded-xl border border-gray-800 overflow-hidden">
+                    <div class="p-4 md:p-6 border-b border-gray-800">
+                        <h3 class="font-semibold text-lg">Recent Campaigns</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-gray-900/50 text-gray-400">
+                                <tr>
+                                    <th class="px-4 md:px-6 py-4 font-medium">Campaign</th>
+                                    <th class="px-4 md:px-6 py-4 font-medium">Status</th>
+                                    <th class="px-4 md:px-6 py-4 font-medium hidden md:table-cell">Recipients</th>
+                                    <th class="px-4 md:px-6 py-4 font-medium">Safety</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800">
+                                <tr class="hover:bg-gray-900/30 transition">
+                                    <td class="px-4 md:px-6 py-4">
+                                        <div class="font-semibold text-sm md:text-base">Summer Sale 2024</div>
+                                        <div class="text-xs text-gray-500">2h ago</div>
+                                    </td>
+                                    <td class="px-4 md:px-6 py-4"><span class="px-2 md:px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">Completed</span></td>
+                                    <td class="px-4 md:px-6 py-4 text-gray-300 hidden md:table-cell">12,450</td>
+                                    <td class="px-4 md:px-6 py-4"><span class="text-green-400 text-xs md:text-sm font-bold">98%</span></td>
+                                </tr>
+                                <tr class="hover:bg-gray-900/30 transition">
+                                    <td class="px-4 md:px-6 py-4">
+                                        <div class="font-semibold text-sm md:text-base">Welcome Series</div>
+                                        <div class="text-xs text-gray-500">Running</div>
+                                    </td>
+                                    <td class="px-4 md:px-6 py-4"><span class="px-2 md:px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-bold">Active</span></td>
+                                    <td class="px-4 md:px-6 py-4 text-gray-300 hidden md:table-cell">8,230</td>
+                                    <td class="px-4 md:px-6 py-4"><span class="text-green-400 text-xs md:text-sm font-bold">99%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+</body>
+</html>
