@@ -8,14 +8,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-        
         body { font-family: 'Inter', sans-serif; }
-        
         .mo-yellow { color: #F5B800; }
         .mo-yellow-bg { background-color: #F5B800; }
         .mo-black { background-color: #0a0a0a; }
-        .mo-dark { background-color: #1a1a1a; }
-        
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 184, 0, 0.2);
+        }
         .safety-mark {
             background: linear-gradient(135deg, #F5B800 0%, #FFD700 100%);
             color: #000;
@@ -27,23 +28,6 @@
             align-items: center;
             gap: 6px;
         }
-        
-        .glass-panel {
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(245, 184, 0, 0.2);
-        }
-        
-        .step-active {
-            border-color: #F5B800;
-            background: rgba(245, 184, 0, 0.1);
-        }
-        
-        input:focus {
-            border-color: #F5B800;
-            box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.2);
-        }
-        
         .btn-primary {
             background: #F5B800;
             color: #000;
@@ -55,63 +39,43 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(245, 184, 0, 0.3);
         }
-        
-        .scam-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            border: 1px solid #333;
-            transition: all 0.3s;
-        }
-        .scam-card:hover {
-            border-color: #F5B800;
-            transform: translateX(5px);
-        }
-        
-        .hidden { display: none !important; }
-        
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="mo-black text-white min-h-screen">
-
     <!-- Navigation -->
     <nav class="fixed w-full z-50 glass-panel border-b border-yellow-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="showView('landing')">
+                <a href="index.html" class="flex items-center gap-3">
                     <div class="w-10 h-10 mo-yellow-bg rounded-lg flex items-center justify-center text-black font-bold text-xl">M</div>
                     <span class="text-2xl font-bold tracking-tight">Mobile <span class="mo-yellow">Objex</span></span>
-                </div>
+                </a>
                 <div class="hidden md:flex items-center gap-6">
-                    <button onclick="showView('landing')" class="text-gray-300 hover:text-yellow-400 transition">Home</button>
-                    <button onclick="showView('register')" class="text-gray-300 hover:text-yellow-400 transition">Protect Me</button>
-                    <button onclick="showView('brand-dashboard')" class="text-gray-300 hover:text-yellow-400 transition">For Brands</button>
-                    <button onclick="showView('scam-game')" class="px-4 py-2 mo-yellow-bg text-black rounded-lg font-semibold hover:bg-yellow-400 transition">
+                    <a href="index.html" class="text-gray-300 hover:text-yellow-400 transition">Home</a>
+                    <a href="register.html" class="text-gray-300 hover:text-yellow-400 transition">Protect Me</a>
+                    <a href="brand-dashboard.html" class="text-gray-300 hover:text-yellow-400 transition">For Brands</a>
+                    <a href="scam-game.html" class="px-4 py-2 mo-yellow-bg text-black rounded-lg font-semibold hover:bg-yellow-400 transition">
                         <i class="fas fa-shield-alt mr-2"></i>Play "It's a Scam"
-                    </button>
+                    </a>
                 </div>
-                <!-- Mobile menu button -->
-                <button class="md:hidden text-gray-300" onclick="toggleMobileMenu()">
+                <!-- Mobile menu -->
+                <button class="md:hidden text-gray-300" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-gray-800">
             <div class="px-4 pt-2 pb-4 space-y-2">
-                <button onclick="showView('landing')" class="block w-full text-left text-gray-300 hover:text-yellow-400 py-2">Home</button>
-                <button onclick="showView('register')" class="block w-full text-left text-gray-300 hover:text-yellow-400 py-2">Protect Me</button>
-                <button onclick="showView('brand-dashboard')" class="block w-full text-left text-gray-300 hover:text-yellow-400 py-2">For Brands</button>
-                <button onclick="showView('scam-game')" class="block w-full text-left mo-yellow py-2">Play "It's a Scam"</button>
+                <a href="index.html" class="block text-gray-300 hover:text-yellow-400 py-2">Home</a>
+                <a href="register.html" class="block text-gray-300 hover:text-yellow-400 py-2">Protect Me</a>
+                <a href="brand-dashboard.html" class="block text-gray-300 hover:text-yellow-400 py-2">For Brands</a>
+                <a href="scam-game.html" class="block mo-yellow py-2">Play "It's a Scam"</a>
             </div>
         </div>
     </nav>
 
-    <!-- Toast Notifications -->
-    <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-2"></div>
-
-    <!-- VIEW 1: Landing Page -->
-    <section id="landing" class="min-h-screen pt-16 flex items-center relative overflow-hidden">
+    <!-- Landing Page Content -->
+    <section class="min-h-screen pt-16 flex items-center relative overflow-hidden">
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-20 left-10 w-96 h-96 bg-yellow-500/10 rounded-full filter blur-3xl animate-pulse"></div>
             <div class="absolute bottom-20 right-10 w-96 h-96 bg-yellow-500/5 rounded-full filter blur-3xl animate-pulse" style="animation-delay: 1s"></div>
@@ -119,7 +83,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8 fade-in">
+                <div class="space-y-8">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 text-sm font-medium">
                         <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
                         AI-Powered Fraud Detection Active
@@ -136,12 +100,12 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button onclick="showView('register')" class="btn-primary px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-2">
+                        <a href="register.html" class="btn-primary px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-2 text-center">
                             Start Protecting Now <i class="fas fa-arrow-right"></i>
-                        </button>
-                        <button onclick="showView('scam-game')" class="px-8 py-4 border border-gray-600 rounded-xl font-semibold hover:border-yellow-500 hover:text-yellow-400 transition flex items-center justify-center gap-2">
+                        </a>
+                        <a href="scam-game.html" class="px-8 py-4 border border-gray-600 rounded-xl font-semibold hover:border-yellow-500 hover:text-yellow-400 transition flex items-center justify-center gap-2 text-center">
                             <i class="fas fa-gamepad"></i> Play Safety Game
-                        </button>
+                        </a>
                     </div>
 
                     <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-800">
@@ -160,7 +124,8 @@
                     </div>
                 </div>
 
-                <div class="relative flex justify-center fade-in" style="animation-delay: 0.2s">
+                <!-- Phone Mockup -->
+                <div class="relative flex justify-center">
                     <div class="relative w-80 bg-black rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden">
                         <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-gray-800 rounded-b-2xl z-10"></div>
                         <div class="h-[600px] bg-gradient-to-b from-gray-900 to-black p-6 pt-12 relative">
@@ -183,10 +148,8 @@
                                     <p class="text-sm text-gray-300">Your package #12345 has been delivered.</p>
                                 </div>
                                 <div class="bg-red-900/20 rounded-2xl p-4 border border-red-500/30 opacity-60">
-                                    <div class="absolute top-2 right-2">
-                                        <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">BLOCKED</span>
-                                    </div>
-                                    <p class="text-sm text-gray-400 line-through">URGENT: Bank account frozen!</p>
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full absolute top-2 right-2">BLOCKED</span>
+                                    <p class="text-sm text-gray-400 line-through mt-4">URGENT: Bank account frozen!</p>
                                 </div>
                             </div>
                         </div>
@@ -195,421 +158,5 @@
             </div>
         </div>
     </section>
-
-    <!-- VIEW 2: Registration -->
-    <section id="register" class="min-h-screen pt-16 bg-black hidden">
-        <div class="max-w-3xl mx-auto px-4 py-12">
-            <div class="mb-12">
-                <div class="flex items-center justify-between relative mb-4">
-                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-800 rounded-full">
-                        <div id="progress-bar" class="h-full mo-yellow-bg rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="1">
-                        <div class="w-10 h-10 rounded-full mo-yellow-bg text-black flex items-center justify-center font-bold border-4 border-black">1</div>
-                        <span class="text-xs mt-2 text-gray-400">Account</span>
-                    </div>
-                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="2">
-                        <div class="w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black">2</div>
-                        <span class="text-xs mt-2 text-gray-500">Profile</span>
-                    </div>
-                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="3">
-                        <div class="w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black">3</div>
-                        <span class="text-xs mt-2 text-gray-500">Verify</span>
-                    </div>
-                    <div class="step-indicator relative z-10 flex flex-col items-center" data-step="4">
-                        <div class="w-10 h-10 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold border-4 border-black">4</div>
-                        <span class="text-xs mt-2 text-gray-500">Done</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 1 -->
-            <div id="reg-step-1" class="glass-panel rounded-2xl p-8 border border-gray-800 fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold mb-2">Create Your <span class="mo-yellow">Shield</span></h2>
-                    <p class="text-gray-400">Join the fraud-free messaging network</p>
-                </div>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input type="email" id="reg-email" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="you@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                        <input type="password" id="reg-password" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="••••••••">
-                    </div>
-                </div>
-                <button onclick="nextRegStep(2)" class="w-full mt-6 btn-primary py-4 rounded-xl font-bold text-lg">Continue <i class="fas fa-arrow-right ml-2"></i></button>
-            </div>
-
-            <!-- Step 2 -->
-            <div id="reg-step-2" class="glass-panel rounded-2xl p-8 border border-gray-800 hidden fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold mb-2">Your <span class="mo-yellow">Profile</span></h2>
-                    <p class="text-gray-400">Help us personalize your protection</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">First Name</label>
-                        <input type="text" id="reg-firstname" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="John">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
-                        <input type="text" id="reg-lastname" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="Doe">
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
-                    <input type="tel" id="reg-phone" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none transition" placeholder="+1 (555) 000-0000">
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="prevRegStep(1)" class="flex-1 py-4 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 transition">Back</button>
-                    <button onclick="nextRegStep(3)" class="flex-1 btn-primary py-4 rounded-xl font-bold">Continue</button>
-                </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div id="reg-step-3" class="glass-panel rounded-2xl p-8 border border-gray-800 hidden fade-in">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <i class="fas fa-mobile-alt mo-yellow text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold mb-2">Verify Phone</h2>
-                    <p class="text-gray-400">Enter code: <span class="mo-yellow font-mono">123456</span></p>
-                </div>
-                <div class="flex justify-center gap-3 mb-6">
-                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" onkeyup="handleOTP(this, 0)">
-                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" onkeyup="handleOTP(this, 1)">
-                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" onkeyup="handleOTP(this, 2)">
-                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" onkeyup="handleOTP(this, 3)">
-                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" onkeyup="handleOTP(this, 4)">
-                    <input type="text" maxlength="1" class="otp-input w-12 h-14 text-center text-2xl font-bold bg-gray-900 border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none text-white" onkeyup="handleOTP(this, 5)">
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="prevRegStep(2)" class="flex-1 py-4 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 transition">Back</button>
-                    <button onclick="verifyOTP()" class="flex-1 btn-primary py-4 rounded-xl font-bold">Verify</button>
-                </div>
-            </div>
-
-            <!-- Step 4 -->
-            <div id="reg-step-4" class="glass-panel rounded-2xl p-8 border border-gray-800 hidden text-center fade-in">
-                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center animate-bounce">
-                    <i class="fas fa-check text-green-400 text-3xl"></i>
-                </div>
-                <h2 class="text-3xl font-bold mb-4">You're <span class="mo-yellow">Protected!</span></h2>
-                <div class="bg-gray-900 rounded-xl p-6 mb-6 text-left border border-gray-800">
-                    <div class="flex items-center gap-3 mb-3"><i class="fas fa-check-circle text-green-400"></i><span>SMS protection active</span></div>
-                    <div class="flex items-center gap-3 mb-3"><i class="fas fa-check-circle text-green-400"></i><span>Email monitoring enabled</span></div>
-                    <div class="flex items-center gap-3"><i class="fas fa-check-circle text-green-400"></i><span>MO Safety Mark activated</span></div>
-                </div>
-                <button onclick="showView('landing')" class="btn-primary px-8 py-4 rounded-xl font-bold">Go to Dashboard</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- VIEW 3: Brand Dashboard -->
-    <section id="brand-dashboard" class="min-h-screen pt-16 bg-black hidden">
-        <div class="flex h-screen pt-16 -mt-16">
-            <aside class="w-64 bg-gray-900 border-r border-gray-800 hidden md:flex flex-col">
-                <div class="p-6 border-b border-gray-800">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 mo-yellow-bg rounded-full flex items-center justify-center text-black font-bold">B</div>
-                        <div>
-                            <div class="font-semibold">Nike Inc.</div>
-                            <div class="text-xs text-gray-500">Enterprise</div>
-                        </div>
-                    </div>
-                </div>
-                <nav class="flex-1 p-4 space-y-1">
-                    <button class="w-full flex items-center gap-3 px-4 py-3 mo-yellow-bg text-black rounded-lg font-semibold"><i class="fas fa-bullhorn w-5"></i> Campaigns</button>
-                    <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition"><i class="fas fa-users w-5"></i> Audience</button>
-                    <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-lg transition"><i class="fas fa-chart-line w-5"></i> Analytics</button>
-                </nav>
-                <div class="p-4 border-t border-gray-800">
-                    <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 rounded-xl p-4 text-black">
-                        <div class="text-sm font-semibold mb-1">SMS Credits</div>
-                        <div class="text-2xl font-bold">24,500</div>
-                    </div>
-                </div>
-            </aside>
-
-            <main class="flex-1 overflow-y-auto p-4 md:p-8">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                    <div>
-                        <h1 class="text-2xl md:text-3xl font-bold">Campaigns <span class="safety-mark text-sm ml-2"><i class="fas fa-check"></i> MO Verified</span></h1>
-                        <p class="text-gray-400 mt-1 text-sm">Create verified SMS campaigns with fraud protection</p>
-                    </div>
-                    <button onclick="openCampaignModal()" class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2 text-sm md:text-base">
-                        <i class="fas fa-plus"></i> New Campaign
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mo-yellow text-sm md:text-xl"><i class="fas fa-paper-plane"></i></div>
-                            <span class="text-green-400 text-xs md:text-sm"><i class="fas fa-arrow-up"></i> 12%</span>
-                        </div>
-                        <div class="text-xl md:text-3xl font-bold">48.2k</div>
-                        <div class="text-xs md:text-sm text-gray-500">Messages Sent</div>
-                    </div>
-                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-sm md:text-xl"><i class="fas fa-check-double"></i></div>
-                            <span class="text-green-400 text-xs md:text-sm"><i class="fas fa-arrow-up"></i> 8%</span>
-                        </div>
-                        <div class="text-xl md:text-3xl font-bold">99.7%</div>
-                        <div class="text-xs md:text-sm text-gray-500">Delivery Rate</div>
-                    </div>
-                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 text-sm md:text-xl"><i class="fas fa-reply"></i></div>
-                            <span class="text-green-400 text-xs md:text-sm"><i class="fas fa-arrow-up"></i> 24%</span>
-                        </div>
-                        <div class="text-xl md:text-3xl font-bold">32.8%</div>
-                        <div class="text-xs md:text-sm text-gray-500">Response Rate</div>
-                    </div>
-                    <div class="glass-panel p-4 md:p-6 rounded-xl border border-gray-800">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 text-sm md:text-xl"><i class="fas fa-ban"></i></div>
-                            <span class="text-red-400 text-xs md:text-sm font-bold">Blocked</span>
-                        </div>
-                        <div class="text-xl md:text-3xl font-bold">1,240</div>
-                        <div class="text-xs md:text-sm text-gray-500">Fraud Attempts</div>
-                    </div>
-                </div>
-
-                <div class="glass-panel rounded-xl border border-gray-800 overflow-hidden">
-                    <div class="p-4 md:p-6 border-b border-gray-800">
-                        <h3 class="font-semibold text-lg">Recent Campaigns</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-900/50 text-gray-400">
-                                <tr>
-                                    <th class="px-4 md:px-6 py-4 font-medium">Campaign</th>
-                                    <th class="px-4 md:px-6 py-4 font-medium">Status</th>
-                                    <th class="px-4 md:px-6 py-4 font-medium hidden md:table-cell">Recipients</th>
-                                    <th class="px-4 md:px-6 py-4 font-medium">Safety</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-800">
-                                <tr class="hover:bg-gray-900/30 transition">
-                                    <td class="px-4 md:px-6 py-4">
-                                        <div class="font-semibold text-sm md:text-base">Summer Sale 2024</div>
-                                        <div class="text-xs text-gray-500">2h ago</div>
-                                    </td>
-                                    <td class="px-4 md:px-6 py-4"><span class="px-2 md:px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">Completed</span></td>
-                                    <td class="px-4 md:px-6 py-4 text-gray-300 hidden md:table-cell">12,450</td>
-                                    <td class="px-4 md:px-6 py-4"><span class="text-green-400 text-xs md:text-sm font-bold">98%</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </section>
-
-    <!-- VIEW 4: Game -->
-    <section id="scam-game" class="min-h-screen pt-16 bg-black hidden">
-        <div class="max-w-4xl mx-auto px-4 py-12">
-            <div class="text-center mb-12">
-                <h1 class="text-3xl md:text-4xl font-bold mb-4">"It's a <span class="mo-yellow">Scam</span>"</h1>
-                <p class="text-gray-400 text-base md:text-lg">Test your fraud detection skills</p>
-            </div>
-
-            <div class="glass-panel rounded-2xl p-4 md:p-8 border border-gray-800 mb-8">
-                <div class="flex justify-between items-center mb-6 text-sm">
-                    <div class="text-gray-400">Question <span id="q-current">1</span>/3</div>
-                    <div class="mo-yellow font-bold">Score: <span id="score">0</span></div>
-                </div>
-
-                <div class="mb-8">
-                    <div class="text-base md:text-lg mb-4 font-semibold">Which message is the SCAM?</div>
-                    <div class="space-y-4" id="game-options">
-                        <button onclick="checkAnswer(false)" class="w-full scam-card p-4 rounded-xl text-left hover:bg-gray-800 transition text-sm md:text-base">
-                            <div class="flex items-start gap-3 md:gap-4">
-                                <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 text-xs md:text-sm font-bold">A</div>
-                                <div>
-                                    <div class="font-semibold mb-1">Amazon Delivery</div>
-                                    <p class="text-xs md:text-sm text-gray-400">Your package #12345 has been delivered. Track at amazon.com</p>
-                                    <span class="safety-mark text-xs mt-2 inline-flex"><i class="fas fa-check"></i> Real</span>
-                                </div>
-                            </div>
-                        </button>
-                        <button onclick="checkAnswer(true)" class="w-full scam-card p-4 rounded-xl text-left hover:bg-gray-800 transition text-sm md:text-base">
-                            <div class="flex items-start gap-3 md:gap-4">
-                                <div class="w-8 h-8 md:w-10 md:h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 text-xs md:text-sm font-bold">B</div>
-                                <div>
-                                    <div class="font-semibold mb-1">URGENT: Bank Alert</div>
-                                    <p class="text-xs md:text-sm text-gray-400">Your account is FROZEN. Click here: bit.ly/xyz123</p>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="game-feedback" class="hidden p-4 rounded-xl mb-4 text-sm"></div>
-                <button onclick="nextQuestion()" id="next-btn" class="hidden w-full btn-primary py-3 rounded-xl font-bold">Next Question</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Campaign Modal -->
-    <div id="campaign-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-2xl rounded-2xl border border-gray-800 max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center sticky top-0 bg-gray-900/95 backdrop-blur">
-                <h3 class="text-xl font-bold">Create Verified Campaign</h3>
-                <button onclick="closeCampaignModal()" class="w-8 h-8 rounded-full hover:bg-gray-800 flex items-center justify-center transition"><i class="fas fa-times text-gray-400"></i></button>
-            </div>
-            <div class="p-6 space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Campaign Name</label>
-                    <input type="text" id="camp-name" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition" placeholder="Summer Sale 2024">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                    <textarea id="camp-message" rows="4" maxlength="160" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition resize-none" placeholder="Your message..."></textarea>
-                </div>
-            </div>
-            <div class="p-6 border-t border-gray-800 flex justify-end gap-3 sticky bottom-0 bg-gray-900/95 backdrop-blur">
-                <button onclick="closeCampaignModal()" class="px-6 py-3 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 transition text-sm">Cancel</button>
-                <button onclick="createCampaign()" class="btn-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-sm"><i class="fas fa-paper-plane"></i> Send</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // View Management
-        function showView(viewId) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            const view = document.getElementById(viewId);
-            view.classList.remove('hidden');
-            view.classList.add('fade-in');
-            window.scrollTo(0, 0);
-            // Close mobile menu if open
-            document.getElementById('mobile-menu').classList.add('hidden');
-        }
-
-        // Registration Flow
-        let currentStep = 1;
-        function updateProgress() {
-            const progress = ((currentStep - 1) / 3) * 100;
-            document.getElementById('progress-bar').style.width = progress + '%';
-        }
-
-        function nextRegStep(step) {
-            document.getElementById(`reg-step-${currentStep}`).classList.add('hidden');
-            currentStep = step;
-            document.getElementById(`reg-step-${currentStep}`).classList.remove('hidden');
-            updateProgress();
-        }
-
-        function prevRegStep(step) {
-            document.getElementById(`reg-step-${currentStep}`).classList.add('hidden');
-            currentStep = step;
-            document.getElementById(`reg-step-${currentStep}`).classList.remove('hidden');
-            updateProgress();
-        }
-
-        // OTP Handling
-        function handleOTP(input, index) {
-            if (input.value && index < 5) {
-                input.nextElementSibling.focus();
-            }
-        }
-
-        function verifyOTP() {
-            nextRegStep(4);
-            showToast('Phone verified successfully!', 'success');
-        }
-
-        // Campaign Modal
-        function openCampaignModal() {
-            document.getElementById('campaign-modal').classList.remove('hidden');
-        }
-
-        function closeCampaignModal() {
-            document.getElementById('campaign-modal').classList.add('hidden');
-        }
-
-        function createCampaign() {
-            const name = document.getElementById('camp-name').value;
-            if (!name) {
-                showToast('Please enter a campaign name', 'error');
-                return;
-            }
-            closeCampaignModal();
-            showToast('Campaign created with MO Safety Mark!', 'success');
-        }
-
-        // Game Logic
-        let score = 0;
-        let currentQ = 1;
-
-        function checkAnswer(isScam) {
-            const feedback = document.getElementById('game-feedback');
-            const nextBtn = document.getElementById('next-btn');
-            
-            if (isScam) {
-                score += 100;
-                feedback.className = 'p-4 rounded-xl mb-4 bg-green-500/20 border border-green-500 text-green-400';
-                feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Correct! That was a scam.';
-            } else {
-                feedback.className = 'p-4 rounded-xl mb-4 bg-red-500/20 border border-red-500 text-red-400';
-                feedback.innerHTML = '<i class="fas fa-times-circle mr-2"></i> Not quite! Look for urgency and suspicious links.';
-            }
-            
-            feedback.classList.remove('hidden');
-            nextBtn.classList.remove('hidden');
-            document.getElementById('score').textContent = score;
-        }
-
-        function nextQuestion() {
-            currentQ++;
-            if (currentQ > 3) {
-                showToast('Game completed! Score: ' + score, 'success');
-                setTimeout(() => {
-                    currentQ = 1;
-                    score = 0;
-                    document.getElementById('q-current').textContent = currentQ;
-                    document.getElementById('score').textContent = score;
-                    document.getElementById('game-feedback').classList.add('hidden');
-                    document.getElementById('next-btn').classList.add('hidden');
-                }, 2000);
-                return;
-            }
-            document.getElementById('q-current').textContent = currentQ;
-            document.getElementById('game-feedback').classList.add('hidden');
-            document.getElementById('next-btn').classList.add('hidden');
-        }
-
-        // Toast System
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-            
-            toast.className = `${bg} text-white px-4 md:px-6 py-3 md:py-4 rounded-xl shadow-lg flex items-center gap-3 min-w-[250px] md:min-w-[300px] text-sm md:text-base`;
-            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check' : 'fa-exclamation'}-circle"></i><span class="font-bold">${message}</span>`;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // Initialize
-        updateProgress();
-    </script>
 </body>
 </html>
