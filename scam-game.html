@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>It's a Scam Game - Mobile Objex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mo-yellow { color: #F5B800; }
+        .mo-yellow-bg { background-color: #F5B800; }
+        .mo-black { background-color: #0a0a0a; }
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 184, 0, 0.2);
+        }
+        .scam-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            transition: all 0.3s;
+        }
+        .scam-card:hover {
+            border-color: #F5B800;
+            transform: translateX(5px);
+        }
+        .btn-primary {
+            background: #F5B800;
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="mo-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-yellow-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 mo-yellow-bg rounded-lg flex items-center justify-center text-black font-bold text-xl">M</div>
+                    <span class="text-2xl font-bold tracking-tight">Mobile <span class="mo-yellow">Objex</span></span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-300 hover:text-yellow-400 transition">Home</a>
+                    <a href="register.html" class="text-gray-300 hover:text-yellow-400 transition">Protect Me</a>
+                    <a href="brand-dashboard.html" class="text-gray-300 hover:text-yellow-400 transition">For Brands</a>
+                    <a href="scam-game.html" class="px-4 py-2 mo-yellow-bg text-black rounded-lg font-semibold hover:bg-yellow-400 transition">
+                        <i class="fas fa-shield-alt mr-2"></i>Play "It's a Scam"
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Game Content -->
+    <section class="min-h-screen pt-16 bg-black">
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">"It's a <span class="mo-yellow">Scam</span>"</h1>
+                <p class="text-gray-400 text-base md:text-lg">Test your fraud detection skills. Can you spot the scam?</p>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-4 md:p-8 border border-gray-800 mb-8">
+                <div class="flex justify-between items-center mb-6 text-sm">
+                    <div class="text-gray-400">Question <span id="q-current">1</span>/3</div>
+                    <div class="mo-yellow font-bold">Score: <span id="score">0</span></div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="text-base md:text-lg mb-4 font-semibold">Which message is the SCAM?</div>
+                    
+                    <div class="space-y-4" id="game-options">
+                        <button onclick="checkAnswer(false)" class="w-full scam-card p-4 rounded-xl text-left hover:bg-gray-800 transition text-sm md:text-base">
+                            <div class="flex items-start gap-3 md:gap-4">
+                                <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 text-xs md:text-sm font-bold">A</div>
+                                <div>
+                                    <div class="font-semibold mb-1">Amazon Delivery</div>
+                                    <p class="text-xs md:text-sm text-gray-400">Your package #12345 has been delivered. Track at amazon.com</p>
+                                    <span class="mo-yellow-bg text-black text-xs px-2 py-1 rounded-full mt-2 inline-block">Real</span>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="checkAnswer(true)" class="w-full scam-card p-4 rounded-xl text-left hover:bg-gray-800 transition text-sm md:text-base">
+                            <div class="flex items-start gap-3 md:gap-4">
+                                <div class="w-8 h-8 md:w-10 md:h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 text-xs md:text-sm font-bold">B</div>
+                                <div>
+                                    <div class="font-semibold mb-1">URGENT: Bank Alert</div>
+                                    <p class="text-xs md:text-sm text-gray-400">Your account is FROZEN. Click here: bit.ly/xyz123</p>
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full mt-2 inline-block">SCAM</span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="game-feedback" class="hidden p-4 rounded-xl mb-4 text-sm"></div>
+                <button onclick="nextQuestion()" id="next-btn" class="hidden w-full btn-primary py-3 rounded-xl font-bold">Next Question</button>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-panel rounded-xl p-6 border border-gray-800">
+                    <h3 class="font-bold mb-4 mo-yellow"><i class="fas fa-trophy mr-2"></i>Top Detectives</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-900 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 mo-yellow-bg rounded-full flex items-center justify-center text-black font-bold text-sm">1</div>
+                                <span>Sarah M.</span>
+                            </div>
+                            <span class="font-bold">2,450 pts</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-sm">2</div>
+                                <span>James K.</span>
+                            </div>
+                            <span class="font-bold">2,120 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 border border-gray-800">
+                    <h3 class="font-bold mb-4 mo-yellow"><i class="fas fa-graduation-cap mr-2"></i>Learn</h3>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <p>Real banks never ask for passwords via SMS</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <p>Check sender IDs carefully</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <p>Shortened links (bit.ly) are often suspicious</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let score = 0;
+        let currentQ = 1;
+
+        function checkAnswer(isScam) {
+            const feedback = document.getElementById('game-feedback');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (isScam) {
+                score += 100;
+                feedback.className = 'p-4 rounded-xl mb-4 bg-green-500/20 border border-green-500 text-green-400';
+                feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Correct! That was a scam. Notice the urgency and suspicious link.';
+            } else {
+                feedback.className = 'p-4 rounded-xl mb-4 bg-red-500/20 border border-red-500 text-red-400';
+                feedback.innerHTML = '<i class="fas fa-times-circle mr-2"></i> Not quite! Look for urgency and suspicious links.';
+            }
+            
+            feedback.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+            document.getElementById('score').textContent = score;
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ > 3) {
+                alert('Game completed! Score: ' + score);
+                currentQ = 1;
+                score = 0;
+                document.getElementById('q-current').textContent = currentQ;
+                document.getElementById('score').textContent = score;
+                document.getElementById('game-feedback').classList.add('hidden');
+                document.getElementById('next-btn').classList.add('hidden');
+                return;
+            }
+            document.getElementById('q-current').textContent = currentQ;
+            document.getElementById('game-feedback').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
